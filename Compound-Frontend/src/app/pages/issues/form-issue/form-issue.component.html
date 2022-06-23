@@ -1,0 +1,36 @@
+<app-form-layout [image]="'/assets/images/Group 1141.svg'">
+  <div  class="custom-center">
+    <div class="ar-style mb-5">
+      <div class="mat-display-1 mb-3" color="primary">
+        <button
+          class="form-close"
+          mat-icon-button
+          (click)="rightDrawer.close()">
+          <mat-icon style="color: black">close</mat-icon>
+        </button>
+        {{ "issues.add.caption" | translate }}
+      </div>
+      <div class="mat-subheading-2" style="width: 25rem" color="gray">
+        <h5>{{ "issues.add.fill" | translate }}</h5>
+      </div>
+    </div>
+    <div *ngFor="let issue of issuesList">
+        <mat-checkbox [(ngModel)]="issue.selected">
+          {{languageService.lang == 'en' ? issue.issueNameEnglish : issue.issueNameArabic}}
+        </mat-checkbox>
+    </div>
+    <p>
+      <button
+      [class.spinner]="loading"
+        [disabled]="loading"
+        mat-raised-button
+        color="accent"
+        (click)="saveIssues()"
+      >
+        <span color="white">
+          {{ "issues.add.button" | translate }}
+          </span>
+      </button>
+    </p>
+  </div>
+</app-form-layout>

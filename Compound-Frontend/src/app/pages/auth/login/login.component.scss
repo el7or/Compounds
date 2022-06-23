@@ -1,0 +1,22 @@
+mat-form-field,
+button {
+  width: 328px;
+}
+.visibility-icon {
+  cursor: pointer;
+}
+.LangButton{
+  color:rgb(199 199 199);
+  display: inline;
+  z-index: 1;
+  position: absolute;
+
+.ltr & {
+    text-align: right;
+    right: 32px;}
+.rtl & {
+    text-align: left;
+    left: 32px;
+
+}}
+

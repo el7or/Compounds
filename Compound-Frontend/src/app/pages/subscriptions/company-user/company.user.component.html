@@ -1,0 +1,133 @@
+<div class="container-fluid Header">
+  <div class="ar-style">
+    <div class="mat-display-1 mb-3 mt-5" color="primary">
+      <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+        <mat-icon style="color: black">close</mat-icon>
+      </button>
+      {{ userId ? ('managementUsers.form.edit' | translate) : ('managementUsers.form.add' | translate)}}
+    </div>
+    <mat-divider class="mb-3"></mat-divider>
+  </div>
+  <div class="container">
+    <mat-card class="mat-elevation-z4 col">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="Header">
+            <h3>{{'managementUsers.form.details' | translate}}</h3>
+          </div>
+          <form [formGroup]="form">
+            <p class="mt-4">
+              <app-upload-file
+                [error]="(form.get('userImage')?.touched && form.get('userImage')?.invalid) ? 'image.ImageHint' : null"
+                formControlName="userImage" label="managementUsers.form.image" hint="image.ImageHint"
+                [isRequired]="true" [isMultiple]="false"></app-upload-file>
+            </p>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "managementUsers.form.nameAr" | translate }}</mat-label>
+              <input matInput formControlName="nameAr" #nameAr maxlength="100" autocomplete="off" />
+              <mat-error>{{ ("managementUsers.form.nameAr" | translate) + ("managementUsers.form.requiredHint" |
+                translate) }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "managementUsers.form.nameEn" | translate }}</mat-label>
+              <input matInput formControlName="nameEn" #nameEn maxlength="100" autocomplete="off" />
+              <mat-error>{{ ("managementUsers.form.nameEn" | translate) + ("managementUsers.form.requiredHint" |
+                translate) }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "managementUsers.form.phone" | translate }}</mat-label>
+              <input matInput formControlName="phone" #phone maxlength="100" autocomplete="off" />
+              <mat-error>{{ ("managementUsers.form.phone" | translate) + ("managementUsers.form.requiredHint" |
+                translate) }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "managementUsers.form.email" | translate }}</mat-label>
+              <input type="email" formControlName="email" matInput required />
+              <mat-error>{{ ("managementUsers.form.email" | translate) + ("managementUsers.form.requiredHint" |
+                translate) }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "managementUsers.form.username" | translate }}</mat-label>
+              <input matInput formControlName="username" #username maxlength="100" autocomplete="off" />
+              <mat-error>{{ ("managementUsers.form.username" | translate) + ("managementUsers.form.requiredHint" |
+                translate) }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "managementUsers.form.password" | translate }}</mat-label>
+              <input [type]="visibility1 ? 'text' : 'password'" matInput formControlName="password" required />
+              <mat-icon (click)="visibility1 = !visibility1" *ngIf="!visibility1" class="visibility-icon" matSuffix>
+                visibility</mat-icon>
+              <mat-icon (click)="visibility1 = !visibility1" *ngIf="visibility1" class="visibility-icon" matSuffix>
+                visibility_off</mat-icon>
+              <mat-error>{{'managementUsers.form.pswrdvalid' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "managementUsers.form.pswrdcnfrm" | translate }}</mat-label>
+              <input [type]="visibility2 ? 'text' : 'password'" matInput formControlName="confirmPassword" required />
+              <mat-icon (click)="visibility2 = !visibility2" *ngIf="!visibility2" class="visibility-icon" matSuffix>
+                visibility</mat-icon>
+              <mat-icon (click)="visibility2 = !visibility2" *ngIf="visibility2" class="visibility-icon" matSuffix>
+                visibility_off</mat-icon>
+              <mat-error>{{'managementUsers.form.cnfrmhint' | translate}}</mat-error>
+            </mat-form-field>
+
+            <div class="col-lg-12 screen-actions">
+              <button  *ngIf="currentUserService.checkRolePageAction(SystemPageActions.ManagementUsersEdit)" [class.spinner]="loading" [disabled]="loading || form.invalid" mat-raised-button color="accent"
+                (click)="onSubmit()">
+                <span color="white">
+                  {{ userId ? ("managementUsers.form.editBtn" | translate) : ("managementUsers.form.addBtn" | translate)
+                  }}</span>
+              </button>
+              <button mat-raised-button (click)="rightDrawer.close()">
+                {{ "managementUsers.form.cancel" | translate }}
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="Header">
+            <!-- <h3>{{'managementUsers.form.resposibilities' | translate}}</h3> -->
+          </div>
+          <div *ngIf="compounds" class="row">
+            <div class="col-lg-12">
+              <h5>{{'managementUsers.form.compounds' | translate}}</h5>
+            </div>
+            <div *ngFor="let compound of compounds" style="border:1px solid darkgrey;padding:5px;margin:10px">
+              <mat-checkbox [(ngModel)]="compound.selected" (change)="onChangeCompounds($event)">
+                <b>{{languageService.lang == 'en' ? compound.nameEn : compound.nameAr}}</b>
+              </mat-checkbox>
+              <div *ngIf="compound.services" class="row">
+                <div class="col-lg-12">
+                  <h6>{{'managementUsers.form.services' | translate}}</h6>
+                </div>
+                <div *ngFor="let service of compound.services" class="col-lg-6">
+                  <mat-checkbox [(ngModel)]="service.selected" [disabled]="!compound.selected">
+                    {{languageService.lang == 'en' ? service.englishName : service.arabicName}}
+                  </mat-checkbox>
+                </div>
+              </div>
+              <div *ngIf="compound.issues" class="row">
+                <div class="col-lg-12">
+                  <h6>{{'managementUsers.form.reports' | translate}}</h6>
+                </div>
+                <div *ngFor="let issue of compound.issues" class="col-lg-6">
+                  <mat-checkbox [(ngModel)]="issue.selected" [disabled]="!compound.selected">
+                    {{languageService.lang == 'en' ? issue.englishName : issue.arabicName}}
+                  </mat-checkbox>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </mat-card>
+  </div>
+</div>

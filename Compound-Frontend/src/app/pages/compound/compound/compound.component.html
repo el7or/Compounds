@@ -1,0 +1,118 @@
+<app-layout [showCompoundList]="false">
+  <div class="container-fluid" [ngClass]="'currentTheme' | translate">
+    <!-- <img class="layer-000" src="/assets/images/Mask Group 37.svg" /> -->
+    <div class="container">
+      <h3 class="recent-comounds mb-3 mt-5" color="primary">
+        {{ "compound.list.recent" | translate }}
+      </h3>
+      <div class="row">
+        <div class="d-flex col-md-4 py-3 py-sm-0 mb-2"  [ngClass]="{'my-disable' : !currentUserService.checkRolePageAction(SystemPageActions.CompoundsAdd)}">
+          <mat-card class="mat-elevation-z4"   (click)="openFormCompound()">
+            <img mat-card-image src="/assets/images/jonni-lundy-alWN2IQIqYc-unsplash.svg"
+              style="height: fit-content; max-height: 300px; object-fit: cover" alt="Photo of a Shiba Inu" />
+            <button class="text-center" class="btn">+</button>
+            <h5 class="card-button" color="primary">
+              {{ "compound.list.btn" | translate }}
+            </h5>
+            <mat-card-content>
+              <p class="icons-analysis mt-3">
+                {{ "compound.list.sub" | translate }}
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="d-flex col-md-4 py-3 py-sm-0 mb-2" *ngFor="let compound of compounds">
+          <mat-card class="mat-elevation-z4">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"
+                [ngStyle]="{'background-image': 'url('+ compound.image +')'}"></div>
+              <mat-card-title class="mb-4">{{ languageService.getName(compound) }}</mat-card-title>
+              <!-- <mat-card-subtitle class="icons-analysis">
+                {{ "compound.list.unit" | translate }}
+                <span>4</span>
+              </mat-card-subtitle> -->
+              <div class="menu-button">
+                <button
+                *ngIf="currentUserService.checkRolePageAction(SystemPageActions.CompoundsEdit)
+                || currentUserService.checkRolePageAction(SystemPageActions.CompoundsDelete)
+                || currentUserService.checkRolePageAction(SystemPageActions.CompoundsManageService)
+                || currentUserService.checkRolePageAction(SystemPageActions.CompoundsManageIssue)
+                || currentUserService.checkRolePageAction(SystemPageActions.UnitsDisplayandFullManagment)
+                || currentUserService.checkRolePageAction(SystemPageActions.GatesAdd)"
+                class="mr-lg-0" mat-icon-button [matMenuTriggerFor]="afterMenu"
+                  aria-label="Example icon-button with a menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #afterMenu="matMenu" xPosition="after">
+                  <button mat-menu-item *ngIf="currentUserService.checkRolePageAction(SystemPageActions.CompoundsEdit)"  (click)="openFormCompound(compound)">
+                    <span>
+                      <mat-icon>mode_edit</mat-icon>
+                    </span>
+                    {{'compound.menu.Edit' | translate}}
+                  </button>
+                  <button mat-menu-item *ngIf="currentUserService.checkRolePageAction(SystemPageActions.CompoundsDelete)"  (click)="deleteGroup(compound)">
+                    <!--  -->
+                    <span>
+                      <mat-icon>delete</mat-icon>
+                    </span>
+                    {{'compound.menu.Delete' | translate}}
+                  </button>
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item *ngIf="currentUserService.checkRolePageAction(SystemPageActions.CompoundsManageService)"  (click)="openFormService(compound)">
+                    <span>
+                      <mat-icon>settings_suggest</mat-icon>
+                    </span>
+                    {{'compound.menu.AddService' | translate}}
+                  </button>
+                  <button mat-menu-item *ngIf="currentUserService.checkRolePageAction(SystemPageActions.CompoundsManageIssue)" (click)="openFormIssue(compound)">
+                    <span>
+                      <mat-icon>report_problem</mat-icon>
+                    </span>
+                    {{'compound.menu.AddIssue' | translate}}
+                  </button>
+                  <button *ngIf="currentUserService.checkRolePageAction(SystemPageActions.UnitsDisplayandFullManagment)"  mat-menu-item [routerLink]="['/' + compound.compoundId + '/units']">
+                    <span>
+                      <mat-icon>house</mat-icon>
+                    </span>
+                    {{'compound.menu.AddUnit' | translate}}
+                  </button>
+                  <button *ngIf="currentUserService.checkRolePageAction(SystemPageActions.GatesAdd)"  mat-menu-item (click)="openFormGate(compound)">
+                    <span>
+                      <mat-icon>door_sliding</mat-icon>
+                    </span>
+                    {{'compound.menu.AddGate' | translate}}
+                  </button>
+                </mat-menu>
+              </div>
+            </mat-card-header>
+            <img mat-card-image [routerLink]="['/' + compound.compoundId + '/dashboard']" (error)="errorHandler($event)"
+              [src]="compound.image" width=" 394" height="194" />
+            <!-- <mat-card-content>
+              <p class="icons-analysis">
+                The Shiba Inu is the smallest ...
+              </p>
+            </mat-card-content> -->
+
+            <div class="icons-analysis">
+              <span [matTooltip]="'compound.menu.owners' | translate" matTooltipPosition="above">
+                <mat-icon class="menu-button2"> person_outline </mat-icon>
+                <span class="icons-style">{{compound.ownersCount}}</span>
+              </span>
+
+              <span [matTooltip]="'compound.menu.units' | translate" matTooltipPosition="above">
+                <mat-icon class="menu-button2"> maps_home_work </mat-icon>
+                <span class="icons-style">{{compound.unitsCount}}</span>
+              </span>
+
+              <span [matTooltip]="'compound.menu.services' | translate" matTooltipPosition="above">
+                <mat-icon class="menu-button2"> engineering </mat-icon>
+                <span>{{compound.servicesCount}}</span>
+              </span>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <img class="layer-444" src="/assets/images/Group 1129.svg" />
+    </div>
+  </div>
+</app-layout>

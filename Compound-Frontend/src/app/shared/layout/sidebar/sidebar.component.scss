@@ -1,0 +1,25 @@
+mat-list {
+  mat-list-item {
+    color: rgb(211, 203, 203);
+    cursor: pointer;
+    &:hover {
+      color: #ffffff;
+    }
+  }
+}
+.active-link {
+  mat-list-item {
+    color: #ffffff;
+  }
+}
+// @keyframes open-nav-width {
+//   0% {
+//     width: 0;
+//   }
+//   100% {
+//     width: 130px;
+//   }
+// }
+// .open-nav-width {
+//   animation: open-nav-width 0.1s linear;
+// }

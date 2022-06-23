@@ -1,0 +1,103 @@
+<div class="container-fluid Header">
+  <div class="ar-style">
+    <div class="mat-display-1 mb-3 mt-3" color="primary">
+      <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+        <mat-icon style="color: black">close</mat-icon>
+      </button>
+      {{ "services.add.caption" | translate }}
+    </div>
+    <div class="mat-subheading-2" color="gray">
+      <h5>{{ "services.add.fill" | translate }}</h5>
+    </div>
+    <mat-divider class="mb-3"></mat-divider>
+  </div>
+  <div class="container pb-3">
+    <table mat-table [dataSource]="servicesList" multiTemplateDataRows class="mat-elevation-z8">
+
+      <ng-container matColumnDef="serviceName">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox [(ngModel)]="element.selected" (ngModelChange)="onChangeServiceType(element)"
+            [disabled]="loading">
+            {{languageService.lang == 'en' ? element.serviceNameEnglish : element.serviceNameArabic}}
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+          <div class="example-element-detail" [@detailExpand]="element.selected ? 'expanded' : 'collapsed'">
+            <ul>
+              <li *ngFor="let subType of element.serviceSubTypes">
+                <ng-container *ngIf="!subType.isEditing">
+                  {{languageService.lang == 'en' ? subType.englishName : subType.arabicName}}: {{ subType.cost }}$
+                  <button mat-icon-button color="primary" (click)="subType.isEditing = true">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="onDeleteServiceSubType($event, subType, element)"
+                    [disabled]="loading">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
+                <div *ngIf="subType.isEditing" class="row">
+                  <mat-form-field appearance="outline" class="col-3">
+                    <mat-label>{{ "services.add.enName" | translate }}</mat-label>
+                    <input matInput #englishName autocomplete="off" [value]="subType.englishName" />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-3">
+                    <mat-label>{{ "services.add.arName" | translate }}</mat-label>
+                    <input matInput #arabicName autocomplete="off" [value]="subType.arabicName" />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-3">
+                    <mat-label>{{ "services.add.cost" | translate }}</mat-label>
+                    <input matInput type="number" #cost autocomplete="off" [value]="subType.cost" />
+                  </mat-form-field>
+                  <p class="col-3">
+                    <button [class.spinner]="loading" mat-mini-fab color="accent"
+                      [disabled]="loading || !englishName.value || !arabicName.value || !cost.value"
+                      (click)="onEditServiceSubType(subType.serviceSubTypeId ,englishName.value, arabicName.value , cost.value, element)">
+                      <mat-icon>check</mat-icon>
+                    </button>&nbsp;
+                    <button mat-mini-fab color="warn" (click)="subType.isEditing = false">
+                      <mat-icon>clear</mat-icon>
+                    </button>
+                  </p>
+                </div>
+              </li>
+            </ul>
+            <div class="row">
+              <mat-form-field appearance="outline" class="col-3">
+                <mat-label>{{ "services.add.enName" | translate }}</mat-label>
+                <input matInput #englishName autocomplete="off" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col-3">
+                <mat-label>{{ "services.add.arName" | translate }}</mat-label>
+                <input matInput #arabicName autocomplete="off" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col-3">
+                <mat-label>{{ "services.add.cost" | translate }}</mat-label>
+                <input matInput type="number" #cost autocomplete="off" />
+              </mat-form-field>
+              <p class="col-3">
+                <button [class.spinner]="loading" mat-raised-button color="accent"
+                  [disabled]="loading || !englishName.value || !arabicName.value || !cost.value" (click)="onAddServiceSubType(englishName.value, arabicName.value , cost.value, element);
+                  englishName.value = ''; arabicName.value = ''; cost.value = ''">
+                  <span color="white">
+                    {{ "services.add.button" | translate }}
+                  </span>
+                </button>
+              </p>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    </table>
+  </div>
+</div>

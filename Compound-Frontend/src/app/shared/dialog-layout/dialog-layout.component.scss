@@ -1,0 +1,56 @@
+// // h2{
+// //   font-size: 2rem;
+// //   margin-top: 18px;
+// // }
+// // img{
+// //   position: absolute;
+// //   top:-15px;
+
+// // }
+// // .dialog {
+// //   position: relative;
+// //   width: 100%;
+// //   height: 100%;
+// // }
+
+// ::ng-deep .mat-dialog-container {
+//   display: inline-table;
+//   padding: 24px;
+//   border-radius: 4px;
+//   box-sizing: border-box;
+//   overflow: inherit;
+//   outline: 0;
+//   width: 100%;
+//   height: 100%;
+//   min-height: inherit;
+//   max-height: inherit;
+// }
+// h2{
+//   margin-top: -70px;
+// }
+// img{
+//   position: relative;
+//   top: -103px;
+// }
+
+
+::ng-deep .mat-dialog-container {
+  background-color: #E5D8F2;
+
+}
+::ng-deep.no-hover-effect.mat-button.mat-primary .mat-button-focus-overlay
+{
+  background-color: transparent;
+
+}
+.mat-button, .mat-icon-button, .mat-stroked-button{
+  color:#8057A7;
+}
+// .mat-button.mat-primary .mat-button-focus-overlay {
+//   background-color: transparent;
+//   color:#8057A7;
+//.mat-button, .mat-icon-button, .mat-stroked-button
+// }
+::ng-deep .mat-button-focus-overlay {
+  display: none;
+}

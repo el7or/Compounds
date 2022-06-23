@@ -1,0 +1,26 @@
+<div class="main-container" [ngClass]="'currentTheme' | translate">
+  <div class="layout-content">
+    <mat-drawer-container [hasBackdrop]="false" autosize>
+      <mat-drawer #notificationDrawer mode="over" position="end" class="notification-drawer"
+        (openedChange)="onOpenedChange($event)">
+        <app-notification-drawer></app-notification-drawer>
+      </mat-drawer>
+      <app-navbar (showSidebar)="showSidebar()" [isSmallScreen]="isSmallScreen" [showCompoundList]="showCompoundList">
+      </app-navbar>
+      <mat-sidenav-container autosize>
+        <mat-sidenav class="sidenav" #sidenav fixedInViewport="false" *ngIf="compoundId" mode="side"
+          [opened]="!isSmallScreen && showCompoundList ">
+          <app-sidebar [showText]="showText"></app-sidebar>
+        </mat-sidenav>
+        <mat-sidenav-content>
+          <mat-progress-bar class="position-absolute" mode="indeterminate" *ngIf="isItLoading"></mat-progress-bar>
+          <ng-content></ng-content>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+      <app-footer></app-footer>
+    </mat-drawer-container>
+  </div>
+  <mat-sidenav class="rightPanel" #rightPanel position="end" fixedInViewport="true">
+    <ng-template [cdkPortalOutlet]="selectedPortal"></ng-template>
+  </mat-sidenav>
+</div>

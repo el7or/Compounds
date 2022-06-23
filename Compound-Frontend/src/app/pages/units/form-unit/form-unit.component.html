@@ -1,0 +1,46 @@
+<app-form-layout [image]="'/assets/images/Group 1141.svg'">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="custom-center">
+    <div class="ar-style mb-5">
+      <div class="mat-display-1 mb-3" color="primary">
+        <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+          <mat-icon style="color: black">close</mat-icon>
+        </button>
+        {{ caption|translate }}
+      </div>
+      <div class="mat-subheading-2" style="width: 25rem" color="gray">
+       {{ "unit.formUnit.fill" | translate }}
+      </div>
+    </div>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ "unit.formUnit.name" | translate }}</mat-label>
+        <input matInput formControlName="name" required />
+        <mat-error>{{ "unit.formUnit.nameReq" | translate }}</mat-error>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>{{"unit.formUnit.select" | translate}}</mat-label>
+        <mat-select formControlName="compoundUnitTypeId">
+          <mat-option *ngFor="let unitType of unitTypes" [value]="unitType.compoundUnitTypeId">{{languageService.getName(unitType)}}</mat-option>
+        </mat-select>
+        <mat-error>
+          <mat-error>{{ "unit.formUnit.typeErr" | translate }}</mat-error>
+        </mat-error>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <button [class.spinner]="loading"
+              [disabled]="loading"
+              mat-raised-button
+              color="accent"
+              (click)="submit()"
+              [disabled]="!form.valid">
+        <span color="white">
+          {{ "unit.formUnit.save" | translate }}
+        </span>
+      </button>
+    </p>
+  </form>
+</app-form-layout>

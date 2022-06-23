@@ -1,0 +1,26 @@
+::ng-deep .mat-step-header[aria-selected="true"] {
+  background-color: rgb(128, 87, 167, 0.1);
+  height: 0px;
+  border-radius: 5px;
+}
+::ng-deep .mat-step-header[aria-selected="false"] {
+  border-radius: 5px;
+  height: 0px;
+}
+.visibility-icon {
+  cursor: pointer;
+}
+.LangButton{
+  color:rgb(199 199 199);
+  display: inline;
+  z-index: 1;
+  position: absolute;
+
+.ltr & {
+    text-align: right;
+    right: 42px;}
+.rtl & {
+    text-align: left;
+    left: 52px;
+
+}}

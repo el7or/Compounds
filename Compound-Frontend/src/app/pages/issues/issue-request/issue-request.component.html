@@ -1,0 +1,154 @@
+<div class="container-fluid Header">
+  <div class="ar-style">
+    <div class="mat-display-1 mb-3 mt-5" color="primary">
+      <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+        <mat-icon style="color: black">close</mat-icon>
+      </button>
+      {{'issues.request.details' | translate}}
+      <span *ngIf="issueRequest" [ngClass]="{'status-pending' : issueRequest.status == 0,
+        'status-done' : issueRequest.status == 1 , 'status-cancelled' : issueRequest.status == 2 }">
+        {{ issueRequest.status ==1 ? ('issues.list.done' | translate) :
+        issueRequest.status == 2 ? ('issues.list.cancelled' | translate) :
+        ('issues.list.pending' | translate) }}
+      </span>
+    </div>
+    <mat-divider class="mb-3"></mat-divider>
+  </div>
+  <mat-card class="mat-elevation-z4 m-5 mt-5">
+    <div class="row" *ngIf="issueRequest">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="issue-icon">
+              <img width="48px" height="45px" src="{{issueRequest.icon}}" />
+            </div>
+          </div>
+          <div class="col-md-8">
+            <span style="position: absolute;top: 40%;">{{languageService.lang == 'en' ?
+              issueRequest.issueTypeEnglish : issueRequest.issueTypeArabic}}</span>
+          </div>
+        </div>
+
+        <div style="position: relative;">
+          <p class="issue-comment-reply">{{'issues.request.reply' | translate}}</p>
+          <div class="issue-comment">
+            <p class="comment-txt">
+              <textarea class="comment-txt" [(ngModel)]="issueRequest.comment"></textarea>
+            </p>
+          </div>
+        </div>
+        <div class="screen-actions">
+          <button [disabled]="loading || !issueRequest.comment" mat-raised-button color="accent"
+            (click)="sendComment()">
+            <span color="white">
+              {{ "issues.request.send" | translate }}
+            </span>
+          </button>
+          <button [disabled]="loading || !issueRequest.comment" mat-raised-button color="accent" (click)="sendAndDone()"
+            *ngIf="issueRequest.status==0">
+            <span color="white">
+              {{ "issues.request.sendAndDone" | translate }}
+            </span>
+          </button>
+          <div class="w-100">
+            <button (click)="rightDrawer.close()" class="w-100" mat-raised-button [class.spinner]="loading"
+              [disabled]="loading">
+              <span>{{ "visits.view.back" | translate}}</span>&nbsp;
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="row mt-3">
+            <div class="mr-3 User-style">
+              <button mat-icon-button class="example-icon favorite-icon">
+                <img class="example-header-image" />
+              </button>
+            </div>
+            <div>
+              <span>
+                <p class="mb-0" style="color: black">{{ issueRequest.ownerName }}</p>
+                <p style="color: grey">{{issueRequest.ownerPhone}}</p>
+              </span>
+            </div>
+          </div>
+          <div style="margin: 0 40px 0px 40px;" *ngIf="issueRequest.status==0">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon style="color: gray; transform: rotate(90deg)">more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openDoneDialog($event,issueRequest.issueRequestId)">
+                <mat-icon>check</mat-icon>
+                <span>{{'issues.list.markDone' | translate}}</span>
+              </button>
+              <button mat-menu-item (click)="openCancelDialog($event,issueRequest.issueRequestId)">
+                <mat-icon>cancel</mat-icon>
+                <span>{{'issues.list.cancel' | translate}}</span>
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <td style="width: 30%;">{{'issues.request.id' | translate}}</td>
+              <td>{{issueRequest.requestNumber}}</td>
+            </tr>
+            <tr>
+              <td style="width: 30%;">{{'issues.request.date' | translate}}</td>
+              <td>{{issueRequest.postTime | date : 'dd-MM-yyyy'}}</td>
+            </tr>
+            <tr>
+              <td style="width: 30%;">{{'issues.request.type' | translate}}</td>
+              <td>{{languageService.lang == 'en' ? issueRequest.issueTypeEnglish :
+                issueRequest.issueTypeArabic}}</td>
+            </tr>
+            <tr>
+              <td style="width: 30%;">{{'issues.request.unit' | translate}}</td>
+              <td>{{ issueRequest.unitName }}</td>
+            </tr>
+            <tr>
+              <td style="width: 30%;">{{'issues.request.note' | translate}}</td>
+              <td>{{ issueRequest.note }}</td>
+            </tr>
+            <tr>
+              <td style="width: 30%;">{{'issues.request.comment' | translate}}</td>
+              <td>{{ issueRequest.comment }}</td>
+            </tr>
+            <tr *ngIf="issueRequest.ownerComment">
+              <td style="width: 30%;">{{'issues.request.ownerComment' | translate}}</td>
+              <td>{{ issueRequest.ownerComment }}</td>
+            </tr>
+            <tr *ngIf="issueRequest.rate">
+              <td style="width: 30%;">{{'issues.request.rate' | translate}}</td>
+              <td>{{ issueRequest.rate }} / 5</td>
+            </tr>
+            <tr *ngIf="issueRequest.presenterRate">
+              <td style="width: 30%;">{{'issues.request.presenterRate' | translate}}</td>
+              <td>{{ issueRequest.presenterRate }} / 5</td>
+            </tr>
+            <tr *ngIf="issueRequest.record">
+              <td style="width: 30%;">{{'issues.request.record' | translate}}</td>
+              <td><button class="play-record" (click)="playRecord()"></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-md-12" style="margin-top: 20px;"
+        *ngIf="issueRequest.attachments && issueRequest.attachments.length > 0">
+        <mat-carousel timings="250ms ease-in" [autoplay]="false" [interval]="5000" color="accent" maxWidth="auto"
+          [proportion]="50" [loop]="true"
+          [hideArrows]="issueRequest.attachments && issueRequest.attachments.length > 0 ? false : true"
+          [hideIndicators]="issueRequest.attachments && issueRequest.attachments.length > 0 ? false : true"
+          [useKeyboard]="true" [useMouseWheel]="false">
+          <mat-carousel-slide *ngFor="let slide of issueRequest.attachments; let i = index" [image]="slide"
+            overlayColor="#00000040" [hideOverlay]="true">
+          </mat-carousel-slide>
+        </mat-carousel>
+      </div>
+    </div>
+  </mat-card>
+</div>

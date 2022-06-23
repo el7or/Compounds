@@ -1,0 +1,28 @@
+.mat-form-field,
+.mat-raised-button {
+  display: block;
+}
+.mat-form-field, editor {
+  letter-spacing: 0;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+cdk-virtual-scroll-viewport {
+  min-height: 75%;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+.preview-item {
+  height: 100px;
+}
+
+div.mat-form-field mat-error{
+  font-size: 12px;
+}
+
+mat-carousel{
+  direction: ltr !important;
+}

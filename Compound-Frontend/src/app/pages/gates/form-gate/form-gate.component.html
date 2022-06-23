@@ -1,0 +1,86 @@
+<app-form-layout [image]="'/assets/images/Group 1141.svg'">
+  <form [formGroup]="gateForm" class="custom-center">
+    <div class="ar-style mb-5">
+      <div class="mat-display-1 mb-3" color="primary">
+        <button
+          class="form-close"
+          mat-icon-button
+          (click)="rightDrawer.close()">
+          <mat-icon style="color: black">close</mat-icon>
+        </button>
+        {{(gateId?'gate.add.edit':'gate.add.caption')|translate}}
+      </div>
+      <div class="mat-subheading-2" style="width: 25rem" color="gray">
+        <h5>{{ "gate.add.fill" | translate }}</h5>
+      </div>
+    </div>
+    <p>
+      <!-- <mat-form-field appearance="outline">
+        <mat-label>{{ "gate.add.name" | translate }}</mat-label>
+        <input matInput formControlName="gateName" />
+        <mat-error>{{ "gate.add.hint" | translate }}</mat-error>
+      </mat-form-field> -->
+      <mat-form-field appearance="outline">
+        <mat-label>{{ "gate.add.name" | translate }}</mat-label>
+        <input type="text"  aria-label="Number" matInput formControlName="gateName" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredGates | async" [value]="option.gateName">
+            {{option.gateName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Select Entry Type</mat-label>
+        <mat-select
+        formControlName="entryType"
+         (valueChange)="changeValue($event)" >
+          <mat-option  *ngFor="let entry of entryTypes"
+                      [value]="entry.value">
+            {{entry.name}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="gateForm.controls['entryType'].hasError('required') && gateForm.controls['entryType'].pristine">
+          <mat-error>{{ "gate.add.grouperr" | translate }}</mat-error>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{ "gate.add.userName" | translate }}</mat-label>
+        <input matInput formControlName="userName" />
+        <mat-error>{{ "gate.add.userNameError" | translate }}</mat-error>
+      </mat-form-field>
+      <!-- <mat-form-field appearance="outline">
+        <mat-label>{{ "gate.add.password" | translate }}</mat-label>
+        <input type='password' matInput formControlName="password" />
+        <mat-error>{{ "gate.add.passwordError" | translate }}</mat-error>
+      </mat-form-field> -->
+        <mat-form-field appearance="outline" >
+          <mat-label>{{ "gate.add.password" | translate }}</mat-label>
+          <input [type]="visibility1 ? 'text' : 'password'" matInput formControlName="password" />
+          <mat-icon (click)="visibility1 = !visibility1" *ngIf="!visibility1" class="visibility-icon" matSuffix>visibility</mat-icon>
+          <mat-icon (click)="visibility1 = !visibility1" *ngIf="visibility1" class="visibility-icon" matSuffix>visibility_off</mat-icon>
+          <mat-error>{{ "gate.add.passwordError" | translate }}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>{{ "gate.add.pswrdcnfrm" | translate }}</mat-label>
+          <input [type]="visibility2 ? 'text' : 'password'" matInput formControlName="confirmPassword"/>
+          <mat-icon (click)="visibility2 = !visibility2" *ngIf="!visibility2" class="visibility-icon" matSuffix>visibility</mat-icon>
+          <mat-icon (click)="visibility2 = !visibility2" *ngIf="visibility2" class="visibility-icon" matSuffix>visibility_off</mat-icon>
+          <mat-error>{{'gate.add.cnfrmhint' | translate}}</mat-error>
+        </mat-form-field>
+    </p>
+
+
+    <p>
+      <button *ngIf="currentUserService.checkRolePageAction(SystemPageActions.GatesEdit)" 
+        [class.spinner]="loading"
+        [class.spinner]="loading" [disabled]="loading || gateForm.invalid"
+        mat-raised-button
+        color="accent"
+        (click)="submit()" >
+        <span color="white" >
+          {{ "gate.add.save" | translate }}</span>
+      </button>
+    </p>
+  </form>
+</app-form-layout>

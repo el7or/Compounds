@@ -1,0 +1,20 @@
+<div matRipple *ngFor="let route of routes" routerLinkActive="active-link">
+  <mat-list>
+    <mat-list-item *ngIf="currentUserService.checkRolePageAction(route.roleAction!)" [routerLink]="['/'+compoundId+route.path]">
+      <mat-icon class="mr-3 ml-3"
+                #tooltip="matTooltip"
+                matTooltip="{{ route.name | translate }}"
+                matTooltipPosition="left">
+        {{route.icon}}
+      </mat-icon>
+      <div *ngIf="showText">{{ route.name | translate }}</div>
+    </mat-list-item>
+  </mat-list>
+
+  <mat-list>
+    <mat-list-item *ngFor="let child of route.child" [routerLink]="[child.path]" routerLinkActive="active" class="child">
+      <mat-icon>{{child.icon}}</mat-icon>
+      <span>{{ child.name | translate }}</span>
+    </mat-list-item>
+  </mat-list>
+</div>

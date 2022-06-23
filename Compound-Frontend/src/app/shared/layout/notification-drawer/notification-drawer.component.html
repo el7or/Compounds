@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-between p-2">
+  <button mat-raised-button [matMenuTriggerFor]="menu">
+    <span *ngIf="!selectedCompound">{{"navbar.menu.AllCompounds" | translate}}</span>
+    <span *ngIf="selectedCompound">{{ languageService.getName(selectedCompound) }}</span>
+    <mat-icon>arrow_drop_down</mat-icon>
+  </button>
+  <button mat-icon-button (click)="closeDrawer()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="selectCompound(null)">
+    <span>{{"navbar.menu.AllCompounds" | translate}}</span>
+    <span *ngIf="!selectedCompound">
+      <mat-icon>done</mat-icon>
+    </span>
+  </button>
+  <mat-divider></mat-divider>
+  <button *ngFor="let compound of compounds" mat-menu-item (click)="selectCompound(compound)">
+    <span>{{ languageService.getName(compound) }}</span>
+    <span *ngIf="selectedCompound?.compoundId == compound.compoundId">
+      <mat-icon>done</mat-icon>
+    </span>
+  </button>
+</mat-menu>
+<mat-divider></mat-divider>
+<mat-nav-list>
+  <a *ngFor="let item of pendingList" (click)="onOpenDetails(item)">
+    <mat-card class="m-2">
+      <!-- <mat-card-title>Actions Buttons</mat-card-title> -->
+      <mat-card-subtitle class="d-flex justify-content-between">
+        <span>{{ languageService.lang == 'en' ? item.compoundNameEn : item.compoundNameAr }}</span>
+        <span>{{ item.createdDate | date:'dd-MM-yyyy hh:mm a' }}</span>
+      </mat-card-subtitle>
+      <mat-card-content>
+        <p>{{ PendingType[item.pendingType] | translate }} {{ 'reqFrom' | translate }} <b>{{item.createdByName ||
+            ('unnamed' | translate)}}</b> {{ 'needConfirm' | translate }}</p>
+        <span>
+          <mat-icon inline="true" color="primary">{{item.icon}}</mat-icon>&nbsp;
+          <span>{{ PendingType[item.pendingType] | translate }}</span>
+        </span>
+      </mat-card-content>
+    </mat-card>
+  </a>
+  <p *ngIf="!pendingList?.length" class="text-center">{{'noData' |translate}}</p>
+</mat-nav-list>
+<div #loadingMoreElRef [hidden]="pendingList?.length == notificationDrawerService.badge">
+  <mat-card class="d-flex justify-content-center m-2">
+    <span>
+      <mat-spinner [diameter]="20"></mat-spinner>
+    </span>
+    <span class="mx-1">{{ "btnLoadMore" | translate }}</span>
+  </mat-card>
+</div>

@@ -1,0 +1,80 @@
+<app-form-layout [image]="'/assets/images/Group 1117.svg'">
+  <div class="custom-center ownerWidth">
+    <div class="ar-style">
+      <div class="mat-display-1 mb-3 mt-5" color="primary">
+        <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+          <mat-icon style="color: black">close</mat-icon>
+        </button>
+        {{'unit.formOwner.add' | translate}}
+      </div>
+      <div class="mat-subheading-2" color="gray">
+        {{'unit.formOwner.fill' | translate}}
+      </div>
+    </div>
+    <div class="w-100">
+      <mat-vertical-stepper linear #stepper>
+        <mat-step [stepControl]="ownerBasicInfoForm" [formGroup]="ownerBasicInfoForm">
+          <ng-template ariaLabel="asdasd" matStepLabel>
+            {{'unit.formOwner.ownerInfo' | translate}}
+          </ng-template>
+
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label> {{'unit.formOwner.name' | translate}}</mat-label>
+              <input class="input" matInput formControlName="name" />
+              <mat-error>{{'unit.formOwner.nameReq' | translate}}</mat-error>
+            </mat-form-field>
+          </p>
+
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{'unit.formOwner.address' | translate}}</mat-label>
+              <input matInput formControlName="address" />
+              <mat-error>{{'unit.formOwner.addressReq' | translate}}</mat-error>
+            </mat-form-field>
+          </p>
+
+          <p>
+            <button matStepperNext class="w-100" mat-raised-button color="accent"
+              (click)="ownerBasicInfoForm.get('image')?.markAsTouched()">
+              <span color="white"> {{'unit.formOwner.next' | translate}}</span>
+            </button>
+          </p>
+        </mat-step>
+        <mat-step [stepControl]="ownerContactForm" [formGroup]="ownerContactForm">
+          <ng-template matStepLabel (click)="changeInfo()">
+            <div class="stepper-header-overlay"></div>
+            {{'unit.formOwner.contactInfo' | translate}}
+          </ng-template>
+
+          <!-- <p class="mb-3 mt-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "unit.formOwner.phone" | translate }}</mat-label>
+              <input matInput formControlName="phone" required />
+              <mat-error>{{ "unit.formOwner.phoneErr" | translate }}</mat-error>
+            </mat-form-field>
+          </p> -->
+
+          <p class="mt-3">
+            <app-phone-form label="unit.formOwner.phone" defaultCode="EG" hint="" error="unit.formOwner.phoneErr"
+              formControlName="phone"></app-phone-form>
+          </p>
+
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "unit.formOwner.email" | translate }}</mat-label>
+              <input matInput formControlName="email" required />
+              <mat-error>{{ "unit.formOwner.emailErr" | translate }}</mat-error>
+            </mat-form-field>
+          </p>
+          <p>
+            <button (click)="submit()" class="w-100" mat-raised-button color="accent" [class.spinner]="loading"
+              [disabled]="loading" [disabled]="loading || ownerBasicInfoForm.invalid|| ownerContactForm.invalid">
+              <span color="white">{{"unit.formOwner.save" | translate}}</span>
+            </button>
+          </p>
+        </mat-step>
+      </mat-vertical-stepper>
+    </div>
+  </div>
+</app-form-layout>

@@ -1,0 +1,137 @@
+<app-layout [showCompoundList]="true" [ngClass]="'currentTheme' | translate">
+  <mat-card class="mat-elevation-z4 m-5 mt-5">
+    <div class="Header">
+      <h3 class="mb-3" color="primary">{{'ad.list.header' | translate}}</h3>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <!-- <mat-form-field class="matformfield" appearance="outline">
+          <mat-icon matPrefix class="ml-1 search-icon">search</mat-icon>
+          <input matInput [(ngModel)]="searchText" name="searchText" (keyup.enter)="onSearch()"
+            [matTooltip]="'ad.list.searchHint' | translate" matTooltipPosition="above" autocomplete="off"
+            placeholder="{{'ad.list.search' | translate}}" />
+        </mat-form-field> -->
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <mat-paginator *ngIf="totalItems" class="paginat"
+          [ngClass]="languageService.lang == 'en' ? 'float-right' : 'float-left'" style-paginator [length]="totalItems"
+          [pageSize]="adFilter.pageSize" [pageSizeOptions]="[3, 5, 10, 20]" [pageIndex]="adFilter.pageNumber - 1"
+          (page)="onPageChange($event.pageIndex)">
+        </mat-paginator>
+      </div>
+      <button *ngIf="currentUserService.checkRolePageAction(SystemPageActions.AdsAdd)"  mat-fab color="accent" (click)="onOpenForm()" [matTooltip]="'ad.list.add' | translate"
+        matTooltipPosition="above"
+        [ngClass]="'fixed-btn '+(languageService.lang == 'en'? 'fixed-btn-right' : 'fixed-btn-left')">
+        <mat-icon class="m-0">add</mat-icon>
+      </button>
+      <div class="col-md-12">
+
+        <table mat-table [dataSource]="dataSource" class="Header" matSort matSortActive="publishDate"
+          matSortDirection="desc" matSortDisableClear>
+
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{(i + 1 + adFilter.pageSize * ((adFilter.pageNumber || 1) -1))}}
+            </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ad.list.title' | translate}}</th>
+            <td mat-cell *matCellDef="let element">
+              <ng-container *ngIf="element.englishTitle && element.arabicTitle">
+                <p class="mb-0 mt-3" style="color: black; font-weight: bold;">{{ languageService.lang == 'en' ?
+                  (element.englishTitle | sliceWords:5) :
+                  (element.arabicTitle | sliceWords:5) }}</p>
+                <p style="color: grey">{{ languageService.lang == 'en' ? (element.arabicTitle | sliceWords:5) :
+                  (element.englishTitle | sliceWords:5) }}</p>
+              </ng-container>
+            </td>
+          </ng-container> -->
+
+          <!-- <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ad.list.description' | translate}}</th>
+            <td mat-cell *matCellDef="let element">
+              <p class="mb-0 mt-3" style="color: black; font-weight: bold;"
+                [innerHtml]="languageService.lang == 'en' ? (element.englishDescription | sliceWords:5) : (element.arabicDescription | sliceWords:5)">
+              </p>
+              <p style="color: grey"
+                [innerHtml]="languageService.lang == 'en' ? (element.arabicDescription | sliceWords:5) : (element.englishDescription | sliceWords:5)">
+              </p>
+            </td>
+          </ng-container> -->
+
+          <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ad.list.startDate' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{ element.startDate | date : 'dd-MM-yyyy' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="endDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ad.list.endDate' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{ element.endDate | date : 'dd-MM-yyyy' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="showsCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ad.list.showsCount' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{ element.showsCount }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="clicksCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ad.list.clicksCount' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{ element.clicksCount }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="uniqueShowsCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ad.list.uniqueShowsCount' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{ element.uniqueShowsCount }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="uniqueClicksCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ad.list.uniqueClicksCount' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{ element.uniqueClicksCount }}</td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ad.list.status' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{ element.isActive ? ('news.list.active' | translate) :
+              ('news.list.inactive' | translate) }}</td>
+          </ng-container> -->
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>{{'ad.list.actions' | translate}}</th>
+            <td mat-cell *matCellDef="let element">
+              <button  *ngIf="currentUserService.checkRolePageAction(SystemPageActions.AdsDelete)
+              || currentUserService.checkRolePageAction(SystemPageActions.AdsDisplay)" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <mat-icon style="color: gray; transform: rotate(90deg)">more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button *ngIf="currentUserService.checkRolePageAction(SystemPageActions.AdsDisplay)"  mat-menu-item (click)="onOpenForm(element.compoundAdId)">
+                  <mat-icon>edit</mat-icon>
+                  <span>{{'ad.list.edit' | translate}}</span>
+                </button>
+                <!-- <button mat-menu-item (click)="onChangeStatus(element)">
+                  <mat-icon *ngIf="element.isActive">cancel</mat-icon>
+                  <mat-icon *ngIf="!element.isActive">restore</mat-icon>
+                  <span>{{element.isActive ? ('ad.list.unpublish' | translate) : ('ad.list.publish' |
+                    translate)}}</span>
+                </button> -->
+                <button *ngIf="currentUserService.checkRolePageAction(SystemPageActions.AdsDelete)"  mat-menu-item (click)="openDialog($event, element)">
+                  <mat-icon>delete</mat-icon>
+                  <span>{{'ad.list.delete' | translate}}</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="10" style="text-align: center;">{{'ad.list.noData' | translate}}</td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </mat-card>
+</app-layout>

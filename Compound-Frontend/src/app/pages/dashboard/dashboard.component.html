@@ -1,0 +1,408 @@
+<app-layout [showCompoundList]="true">
+  <ng-container *ngIf="info">
+    <div class="col-md-12 mt-3" style="background-color: white;">
+      <div class="row ">
+        <div class="col-xl-3 col-lg-6">
+          <div class="card l-bg-cherry">
+            <div class="card-statistic-3 p-4" [routerLink]="['/registeredUsers']" [queryParams]="{userConfirmed:false}">
+              <div class="card-icon card-icon-large"
+                [ngStyle]="languageService.lang=='en' ? {'right': '20px'} : {'left': '20px'}">
+                <mat-icon>person</mat-icon>
+              </div>
+              <div class="mb-2">
+                <h5 class="card-title mb-0">{{ 'dashboard.Users' | translate }}</h5>
+              </div>
+              <div class="row align-items-center mb-2 d-flex">
+                <div class="col-12 mb-2">
+                  <h2 class="d-flex align-items-center mb-0">
+                    {{ info?.allUsersCount }}
+                  </h2>
+                </div>
+                <div class="col-9">
+                  <h6 class="d-flex align-items-center mb-0">
+                    {{ 'dashboard.PendingUsers' | translate }}
+                  </h6>
+                </div>
+                <div class="col-3 text-right">
+                  <span>{{ info?.pendingUsersCount }} <i class="fa fa-arrow-down"></i></span>
+                </div>
+              </div>
+              <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                <div class="progress-bar l-bg-cyan" role="progressbar"
+                  [style]="'width: '+(info?.pendingUsersCount!/info?.allUsersCount!*100)+'%'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+          <div class="card l-bg-blue-dark">
+            <div class="card-statistic-3 p-4" [routerLink]="['/',dashboardFilter.compoundId,'visits']"
+              [queryParams]="{status:2}">
+              <div class="card-icon card-icon-large"
+                [ngStyle]="languageService.lang=='en' ? {'right': '20px'} : {'left': '20px'}">
+                <mat-icon>meeting_room</mat-icon>
+              </div>
+              <div class="mb-2">
+                <h5 class="card-title mb-0">{{ 'dashboard.Visits' | translate }}</h5>
+              </div>
+              <div class="row align-items-center mb-2 d-flex">
+                <div class="col-12 mb-2">
+                  <h2 class="d-flex align-items-center mb-0">
+                    {{ info?.allVisitsCount }}
+                  </h2>
+                </div>
+                <div class="col-9">
+                  <h6 class="d-flex align-items-center mb-0">
+                    {{'dashboard.PendingVisits' | translate }}
+                  </h6>
+                </div>
+                <div class="col-3 text-right">
+                  <span>{{ info?.pendingVisitsCount }} <i class="fa fa-arrow-down"></i></span>
+                </div>
+              </div>
+              <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                <div class="progress-bar l-bg-green" role="progressbar"
+                  [style]="'width: '+(info?.pendingVisitsCount!/info?.allVisitsCount!*100)+'%'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+          <div class="card l-bg-green-dark">
+            <div class="card-statistic-3 p-4" [routerLink]="['/',dashboardFilter.compoundId,'services']"
+              [queryParams]="{status:0}">
+              <div class="card-icon card-icon-large"
+                [ngStyle]="languageService.lang=='en' ? {'right': '20px'} : {'left': '20px'}">
+                <mat-icon>miscellaneous_services</mat-icon>
+              </div>
+              <div class="mb-2">
+                <h5 class="card-title mb-0">{{ 'dashboard.Services' | translate }}</h5>
+              </div>
+              <div class="row align-items-center mb-2 d-flex">
+                <div class="col-12 mb-2">
+                  <h2 class="d-flex align-items-center mb-0">
+                    {{ info?.allServicesCount }}
+                  </h2>
+                </div>
+                <div class="col-9">
+                  <h6 class="d-flex align-items-center mb-0">
+                    {{ 'dashboard.PendingServices' | translate }}
+                  </h6>
+                </div>
+                <div class="col-3 text-right">
+                  <span>{{ info?.pendingServicesCount }} <i class="fa fa-arrow-down"></i></span>
+                </div>
+              </div>
+              <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                <div class="progress-bar l-bg-orange" role="progressbar"
+                  [style]="'width: '+(info?.pendingServicesCount!/info?.allServicesCount!*100)+'%'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-lg-6">
+          <div class="card l-bg-orange-dark">
+            <div class="card-statistic-3 p-4" [routerLink]="['/',dashboardFilter.compoundId,'issues']"
+              [queryParams]="{status:0}">
+              <div class="card-icon card-icon-large"
+                [ngStyle]="languageService.lang=='en' ? {'right': '20px'} : {'left': '20px'}">
+                <mat-icon>report_problem</mat-icon>
+              </div>
+              <div class="mb-2">
+                <h5 class="card-title mb-0">{{ 'dashboard.Issues' | translate }}</h5>
+              </div>
+              <div class="row align-items-center mb-2 d-flex">
+                <div class="col-12 mb-2">
+                  <h2 class="d-flex align-items-center mb-0">
+                    {{ info?.pendingIssuesCount }}
+                  </h2>
+                </div>
+                <div class="col-9">
+                  <h6 class="d-flex align-items-center mb-0">
+                    {{ 'dashboard.PendingIssues' | translate }}
+                  </h6>
+                </div>
+                <div class="col-3 text-right">
+                  <span>0 <i class="fa fa-arrow-down"></i></span>
+                </div>
+              </div>
+              <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                <div class="progress-bar l-bg-cyan" role="progressbar" [style]="'width: '+(0)+'%'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <!-- /************* First Chart ****************/ -->
+    <div *ngIf="dataVisits?.length! > 0" (window:resize)="onResize($event)" style="background-color: white;">
+      <mat-button-toggle-group [(ngModel)]="selectedChartScope" (change)="onSelectChartScope($event.value)" class="mt-3"
+        [ngStyle]="languageService.lang=='en' ? {'left': '15%'} : {'right': '15%'}">
+        <mat-button-toggle [value]="1">{{ 'dashboard.Year' |translate }}</mat-button-toggle>
+        <mat-button-toggle [value]="2">{{ 'dashboard.Month' |translate }}</mat-button-toggle>
+        <mat-button-toggle [value]="3">{{ 'dashboard.Day' |translate }}</mat-button-toggle>
+      </mat-button-toggle-group>
+      <google-chart #chartVisits [type]="ChartType.AreaChart"
+        [title]="('dashboard.' + selectedChartScopeTitle) | translate" [columns]="columnVisits" [data]="dataVisits!"
+        [options]="optionsVisits" [width]="chartWidth" [height]="500">
+      </google-chart>
+    </div>
+    <hr>
+    <!-- /************* Second two Charts ****************/ -->
+    <div class="row">
+      <div *ngIf="dataTotalServices!.length > 0" (window:resize)="onResize($event)" class="col-4">
+        <google-chart #chartTotalServices [type]="ChartType.PieChart" [title]="'dashboard.TotalServices' | translate"
+          [columns]="columnTotalServices" [data]="dataTotalServices!" [options]="optionsTotalServices"
+          [width]="chartWidth/3" [height]="500">
+        </google-chart>
+      </div>
+      <div *ngIf="dataServices!.length > 0" (window:resize)="onResize($event)" class="col-8">
+        <google-chart #chartServices [type]="ChartType.ColumnChart" [title]="'dashboard.Services' | translate"
+          [columns]="columnServices" [data]="dataServices!" [options]="optionsServices" [width]="chartWidth/3*2"
+          [height]="500">
+        </google-chart>
+      </div>
+    </div>
+    <hr>
+    <!-- /************* Third two Charts ****************/ -->
+    <div class="row">
+      <div *ngIf="dataTotalServicesRates!.length > 0" (window:resize)="onResize($event)" class="col-4">
+        <google-chart #chartTotalServicesRates [type]="ChartType.PieChart"
+          [title]="'dashboard.TotalServicesRates' | translate" [columns]="columnTotalServicesRates"
+          [data]="dataTotalServicesRates!" [options]="optionsTotalServicesRates" [width]="chartWidth/3" [height]="500">
+        </google-chart>
+      </div>
+      <div *ngIf="dataServicesRates!.length > 0" (window:resize)="onResize($event)" class="col-8">
+        <google-chart #chartServicesRates [type]="ChartType.ColumnChart" [title]="'dashboard.ServicesRates' | translate"
+          [columns]="columnServicesRates" [data]="dataServicesRates!" [options]="optionsServicesRates"
+          [width]="chartWidth/3*2" [height]="500">
+        </google-chart>
+      </div>
+    </div>
+    <hr>
+    <!-- /************* Fourth Chart ****************/ -->
+    <div *ngIf="dataSubTypes?.length! > 0" (window:resize)="onResize($event)">
+      <google-chart #chartSubTypes [type]="ChartType.ComboChart" [title]="'dashboard.SubTypeCounts' | translate"
+        [columns]="columnSubTypes" [data]="dataSubTypes!" [options]="optionsSubTypes" [width]="chartWidth"
+        [height]="600">
+      </google-chart>
+    </div>
+    <hr>
+    <!-- /************* Fifth two Charts ****************/ -->
+    <div class="row">
+      <div *ngIf="dataTotalIssues!.length > 0" (window:resize)="onResize($event)" class="col-4">
+        <google-chart #chartTotalIssues [type]="ChartType.PieChart" [title]="'dashboard.TotalIssues' | translate"
+          [columns]="columnTotalIssues" [data]="dataTotalIssues!" [options]="optionsTotalIssues" [width]="chartWidth/3"
+          [height]="500">
+        </google-chart>
+      </div>
+      <div *ngIf="dataIssues!.length > 0" (window:resize)="onResize($event)" class="col-8">
+        <google-chart #chartIssues [type]="ChartType.ColumnChart" [title]="'dashboard.Issues' | translate"
+          [columns]="columnIssues" [data]="dataIssues!" [options]="optionsIssues" [width]="chartWidth/3*2"
+          [height]="500">
+        </google-chart>
+      </div>
+    </div>
+    <!-- <hr>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 card pt-2">
+          <h3 class="mx-3 my-3">{{ 'dashboard.LastNews' | translate }}</h3>
+          <div class="people-nearby">
+            <div class="nearby-user">
+              <div class="row">
+                <div class="col-md-2 col-sm-2">
+                  <img src="http://circle360.s3.amazonaws.com/news/66b22ebb-e000-425e-8434-3ae590e8a698.png" alt="user"
+                    class="profile-photo-lg">
+                </div>
+                <div class="col-md-7 col-sm-7">
+                  <h5>{{ 'news.list.title' | translate }} 1</h5>
+                  <p>{{ 'news.list.publishDate' | translate }}: 2021/9/5</p>
+                  <p class="text-muted">{{ 'ad.list.showsCount' | translate }}: 500</p>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  <button class="btn btn-primary pull-right"
+                    (click)="onOpenNewsDetails('943353a2-f384-41dc-8fd7-bcfcf088d07c')">{{ 'news.list.goToTheNews' |
+                    translate }}</button>
+                </div>
+              </div>
+            </div>
+            <div class="nearby-user">
+              <div class="row">
+                <div class="col-md-2 col-sm-2">
+                  <img src="http://circle360.s3.amazonaws.com/news/66b22ebb-e000-425e-8434-3ae590e8a698.png" alt="user"
+                    class="profile-photo-lg">
+                </div>
+                <div class="col-md-7 col-sm-7">
+                  <h5>{{ 'news.list.title' | translate }} 2</h5>
+                  <p>{{ 'news.list.publishDate' | translate }}: 2021/9/4</p>
+                  <p class="text-muted">{{ 'ad.list.showsCount' | translate }}: 20</p>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  <button class="btn btn-primary pull-right"
+                    (click)="onOpenNewsDetails('943353a2-f384-41dc-8fd7-bcfcf088d07c')">{{ 'news.list.goToTheNews' |
+                    translate }}</button>
+                </div>
+              </div>
+            </div>
+            <div class="nearby-user">
+              <div class="row">
+                <div class="col-md-2 col-sm-2">
+                  <img src="http://circle360.s3.amazonaws.com/news/66b22ebb-e000-425e-8434-3ae590e8a698.png" alt="user"
+                    class="profile-photo-lg">
+                </div>
+                <div class="col-md-7 col-sm-7">
+                  <h5>{{ 'news.list.title' | translate }} 3</h5>
+                  <p>{{ 'news.list.publishDate' | translate }}: 2021/9/2</p>
+                  <p class="text-muted">{{ 'ad.list.showsCount' | translate }}: 40</p>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  <button class="btn btn-primary pull-right"
+                    (click)="onOpenNewsDetails('943353a2-f384-41dc-8fd7-bcfcf088d07c')">{{ 'news.list.goToTheNews' |
+                    translate }}</button>
+                </div>
+              </div>
+            </div>
+            <div class="nearby-user">
+              <div class="row">
+                <div class="col-md-2 col-sm-2">
+                  <img src="http://circle360.s3.amazonaws.com/news/66b22ebb-e000-425e-8434-3ae590e8a698.png" alt="user"
+                    class="profile-photo-lg">
+                </div>
+                <div class="col-md-7 col-sm-7">
+                  <h5>{{ 'news.list.title' | translate }} 4</h5>
+                  <p>{{ 'news.list.publishDate' | translate }}: 2021/9/17</p>
+                  <p class="text-muted">{{ 'ad.list.showsCount' | translate }}: 215</p>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  <button class="btn btn-primary pull-right"
+                    (click)="onOpenNewsDetails('943353a2-f384-41dc-8fd7-bcfcf088d07c')">{{ 'news.list.goToTheNews' |
+                    translate }}</button>
+                </div>
+              </div>
+            </div>
+            <div class="nearby-user">
+              <div class="row">
+                <div class="col-md-2 col-sm-2">
+                  <img src="http://circle360.s3.amazonaws.com/news/66b22ebb-e000-425e-8434-3ae590e8a698.png" alt="user"
+                    class="profile-photo-lg">
+                </div>
+                <div class="col-md-7 col-sm-7">
+                  <h5>{{ 'news.list.title' | translate }} 5</h5>
+                  <p>{{ 'news.list.publishDate' | translate }}: 2021/9/10</p>
+                  <p class="text-muted">{{ 'ad.list.showsCount' | translate }}: 0</p>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  <button class="btn btn-primary pull-right"
+                    (click)="onOpenNewsDetails('943353a2-f384-41dc-8fd7-bcfcf088d07c')">{{ 'news.list.goToTheNews' |
+                    translate }}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 card pt-2">
+          <h3 class="mx-3 my-3">{{ 'dashboard.LastSurveys' | translate }}</h3>
+          <div class="people-nearby">
+            <div class="nearby-user">
+              <div class="row">
+                <div class="col-md-2 col-sm-2">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXpC_w4-M2an9DJFL1eZU_ExusyQpGYs1a3Pam2it3juFGGRgYh7llEaBT7Wphb6KB22E&usqp=CAU"
+                    alt="user" class="profile-photo-lg">
+                </div>
+                <div class="col-md-7 col-sm-7">
+                  <h5>{{ 'surveys.list.title' | translate }} 1</h5>
+                  <p>{{ 'news.list.publishDate' | translate }}: 2021/9/5</p>
+                  <p class="text-muted">{{ 'ad.list.showsCount' | translate }}: 500</p>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  <button class="btn btn-primary pull-right">
+                    {{ 'surveys.list.btnDetails' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="nearby-user">
+              <div class="row">
+                <div class="col-md-2 col-sm-2">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXpC_w4-M2an9DJFL1eZU_ExusyQpGYs1a3Pam2it3juFGGRgYh7llEaBT7Wphb6KB22E&usqp=CAU"
+                    alt="user" class="profile-photo-lg">
+                </div>
+                <div class="col-md-7 col-sm-7">
+                  <h5>{{ 'surveys.list.title' | translate }} 2</h5>
+                  <p>{{ 'news.list.publishDate' | translate }}: 2021/9/5</p>
+                  <p class="text-muted">{{ 'ad.list.showsCount' | translate }}: 500</p>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  <button class="btn btn-primary pull-right">
+                    {{ 'surveys.list.btnDetails' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="nearby-user">
+              <div class="row">
+                <div class="col-md-2 col-sm-2">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXpC_w4-M2an9DJFL1eZU_ExusyQpGYs1a3Pam2it3juFGGRgYh7llEaBT7Wphb6KB22E&usqp=CAU"
+                    alt="user" class="profile-photo-lg">
+                </div>
+                <div class="col-md-7 col-sm-7">
+                  <h5>{{ 'surveys.list.title' | translate }} 3</h5>
+                  <p>{{ 'news.list.publishDate' | translate }}: 2021/9/5</p>
+                  <p class="text-muted">{{ 'ad.list.showsCount' | translate }}: 500</p>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  <button class="btn btn-primary pull-right">
+                    {{ 'surveys.list.btnDetails' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="nearby-user">
+              <div class="row">
+                <div class="col-md-2 col-sm-2">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXpC_w4-M2an9DJFL1eZU_ExusyQpGYs1a3Pam2it3juFGGRgYh7llEaBT7Wphb6KB22E&usqp=CAU"
+                    alt="user" class="profile-photo-lg">
+                </div>
+                <div class="col-md-7 col-sm-7">
+                  <h5>{{ 'surveys.list.title' | translate }} 4</h5>
+                  <p>{{ 'news.list.publishDate' | translate }}: 2021/9/5</p>
+                  <p class="text-muted">{{ 'ad.list.showsCount' | translate }}: 500</p>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  <button class="btn btn-primary pull-right">
+                    {{ 'surveys.list.btnDetails' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="nearby-user">
+              <div class="row">
+                <div class="col-md-2 col-sm-2">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXpC_w4-M2an9DJFL1eZU_ExusyQpGYs1a3Pam2it3juFGGRgYh7llEaBT7Wphb6KB22E&usqp=CAU"
+                    alt="user" class="profile-photo-lg">
+                </div>
+                <div class="col-md-7 col-sm-7">
+                  <h5>{{ 'surveys.list.title' | translate }} 5</h5>
+                  <p>{{ 'news.list.publishDate' | translate }}: 2021/9/5</p>
+                  <p class="text-muted">{{ 'ad.list.showsCount' | translate }}: 500</p>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  <button class="btn btn-primary pull-right">
+                    {{ 'surveys.list.btnDetails' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </ng-container>
+</app-layout>

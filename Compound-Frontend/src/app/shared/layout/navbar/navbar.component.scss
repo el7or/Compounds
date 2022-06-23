@@ -1,0 +1,50 @@
+.example-header-image {
+  background-image: url("/assets/images/download.jpg");
+  background-size: cover;
+  right: 185px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+.rtlIcon {
+  padding-top: 10px;
+  .ltr & {
+    margin-right: 2px;
+  }
+  .rtl & {
+    margin-left: 2px;
+  }
+}
+.zIndex1 {
+  z-index: 1;
+}
+.container-fluid {
+  .ltr & {
+    text-align: right;
+  }
+  .rtl & {
+    text-align: left;
+  }
+}
+mat-toolbar {
+  height: 93px;
+  button {
+    color: rgb(211, 203, 203);
+    z-index: 3;
+  }
+}
+.mat-toolbar-row,
+.mat-toolbar-single-row {
+  padding: 0 0px;
+}
+.right-0 {
+  right: 0;
+}
+.notify-margin {
+  .ltr & {
+    margin-left: 22px;
+  }
+  .rtl & {
+    margin-right: 32px;
+  }
+}

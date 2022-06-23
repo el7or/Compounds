@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>7ab1309b-d9cd-4bd0-ab4f-eba64cbb747f</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+    <PackageReference Include="AutoWrapper.Core" Version="4.3.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.13" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Puzzle.Compound.Common\Puzzle.Compound.Common.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Core\Puzzle.Compound.Core.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Data\Puzzle.Compound.Data.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Mapper\Puzzle.Compound.Mapper.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Security\Puzzle.Compound.Security.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Services\Puzzle.Compound.Services.csproj" />
+  </ItemGroup>
+
+
+</Project>

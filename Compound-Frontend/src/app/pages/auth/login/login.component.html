@@ -1,0 +1,53 @@
+<div [ngClass]="'currentTheme' | translate">
+    <button class="fs-1 LangButton" mat-icon-button (click)="changeLang()">
+        {{currentLang}}
+
+        <span>
+            <mat-icon style="padding-top:13px">language</mat-icon>
+        </span>
+    </button>
+</div>
+<app-form-layout [image]="'/assets/images/Group 1103.svg'" [ngClass]="'currentTheme' | translate">
+
+    <form [formGroup]="form" (ngSubmit)="login()" class="custom-center">
+        <div class="ar-style mb-5">
+            <div class="mat-display-1 mb-3" color="primary">
+                {{'auth.login.loginToYourAccount' | translate}}</div>
+            <div class="mat-subheading-2" style="width: 25rem;" color="gray">{{'auth.login.FillYourBelowDataToAccessToYourAccount' | translate}}</div>
+        </div>
+        <p>
+            <mat-form-field appearance="outline">
+                <mat-label>{{'auth.login.email' | translate}}</mat-label>
+                <input matInput formControlName="username" email required>
+                <mat-icon matSuffix>email</mat-icon>
+                <!-- <mat-hint>Please enter a valid email.</mat-hint> -->
+                <mat-error>{{'auth.login.emailError' | translate}}</mat-error>
+            </mat-form-field>
+        </p>
+        <p>
+            <mat-form-field appearance="outline">
+                <mat-label>{{'auth.login.password' | translate}}</mat-label>
+                <input [type]="visibility?'text':'password'" matInput formControlName="password" required>
+                <mat-icon (click)="visibility=!visibility" *ngIf="!visibility" class="visibility-icon" matSuffix>visibility</mat-icon>
+                <mat-icon (click)="visibility=!visibility" *ngIf="visibility" class="visibility-icon" matSuffix>visibility_off</mat-icon>
+                <!-- <mat-hint>Please enter your password.</mat-hint> -->
+                <mat-error>{{'auth.login.pswrdError' | translate}}</mat-error>
+            </mat-form-field>
+        </p>
+        <p>
+            <button [class.spinner]="loading" [disabled]="loading" mat-raised-button color="accent">
+                <span color="white">{{'auth.login.login' | translate}}</span>
+            </button>
+        </p>
+        <p>
+            <button [routerLink]="['/auth/reset-password']" mat-button class="mat-display-1">
+                {{'auth.login.forgetPassword' | translate}}
+            </button>
+        </p>
+        <br />
+        <div class="ar-style">
+            {{'auth.login.DontHaveAnAccount' | translate}}
+            <a [routerLink]="['/accounts/new/cc88abfd-adaf-4df1-b0c6-3b394a3ee9f8']" mat-button color="primary">{{'auth.login.signUp' | translate}}</a>
+        </div>
+    </form>
+</app-form-layout>

@@ -1,0 +1,118 @@
+<app-form-layout [image]="'/assets/images/Group 1117.svg'">
+  <div class="custom-center" [ngClass]="'currentTheme' | translate">
+    <div class="ar-style">
+      <div class="mat-display-1 mb-3 mt-5" color="primary">
+        <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+          <mat-icon style="color: black">close</mat-icon>
+        </button>
+        {{(compoundNameImageForm.value.compoundId?'compound.add.edit':'compound.add.add')|translate}}
+      </div>
+      <div class="mat-subheading-2" color="gray">
+        {{ "compound.add.fill" | translate }}
+      </div>
+    </div>
+    <div class="w-100">
+      <mat-vertical-stepper linear #stepper>
+        <mat-step [stepControl]="compoundNameImageForm" [formGroup]="compoundNameImageForm">
+          <ng-template ariaLabel="asdasd" matStepLabel>
+            <div class="stepper-header-overlay"></div>
+            {{ "compound.add.nameImage" | translate }}
+          </ng-template>
+          <p class="mt-4">
+            <app-upload-file
+              [error]="(compoundNameImageForm.get('image')?.touched && compoundNameImageForm.get('image')?.invalid) ? 'compound.add.hint' : null"
+              formControlName="image" label="compound.add.Image" hint="image.ImageHint" [isRequired]="true"
+              [isMultiple]="false"></app-upload-file>
+          </p>
+          <p class="mt-5">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "compound.add.lblname" | translate }}</mat-label>
+              <input class="input" matInput formControlName="nameEn" />
+              <mat-error>{{ "compound.add.reqName" | translate }}</mat-error>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "compound.add.lblarname" | translate }}</mat-label>
+              <input matInput formControlName="nameAr" />
+              <mat-error>{{ "compound.add.reqName" | translate }}</mat-error>
+            </mat-form-field>
+          </p>
+          <p>
+            <button matStepperNext class="w-100" mat-raised-button color="accent"
+              (click)="compoundNameImageForm.get('image')?.markAsTouched()">
+              <span color="white"> {{ "compound.add.nxt" | translate }}</span>
+            </button>
+          </p>
+        </mat-step>
+        <mat-step [stepControl]="compoundLocationForm" [formGroup]="compoundLocationForm">
+          <ng-template ariaLabel="asdasd" matStepLabel>
+            <div class="stepper-header-overlay"></div>
+            {{ "compound.add.locationHeader" | translate }}
+          </ng-template>
+          <div *ngIf="apiLoaded | async">
+            <google-map #googleMap height="450px" width="370px" [options]="options" class="m-4" [center]="center">
+              <map-marker *ngIf="compoundLocationForm.value.location" [position]="markerLocation"
+                [options]="markerOptions"></map-marker>
+            </google-map>
+            <mat-hint class="map-hint">{{ "compound.add.lochint" | translate}}</mat-hint>
+          </div>
+          <p class="mt-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "compound.add.addrs" | translate }}</mat-label>
+              <input matInput formControlName="address" required />
+              <mat-error>{{ "compound.add.adrsErr" | translate }}</mat-error>
+            </mat-form-field>
+          </p>
+          <p class="mt-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ 'compound.add.timeZone' | translate }}</mat-label>
+              <mat-select formControlName="timeZoneText" (selectionChange)="onSelectTimeZone($event)">
+                <mat-option *ngFor="let timeZone of timeZones" [value]="timeZone.text">
+                  {{timeZone.text}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </p>
+          <p>
+            <button matStepperNext class="w-100" mat-raised-button color="accent">
+              <span color="white"> {{ "compound.add.nxt" | translate }}</span>
+            </button>
+          </p>
+        </mat-step>
+        <mat-step [stepControl]="compoundContactForm" [formGroup]="compoundContactForm">
+          <ng-template matStepLabel (click)="changeInfo()">
+            <div class="stepper-header-overlay"></div>
+            {{ "compound.add.cntct" | translate }}
+          </ng-template>
+
+          <p class="mb-3 mt-3">
+            <app-phone-form label="compound.add.phon" defaultCode="EG" hint="" error="compound.add.phonhint"
+              formControlName="phone"></app-phone-form>
+          </p>
+          <p class="mb-3">
+            <app-phone-form label="compound.add.mob" defaultCode="EG" hint="" error="compound.add.mobhint"
+              formControlName="mobile"></app-phone-form>
+          </p>
+          <p class="mb-3">
+            <app-phone-form label="compound.add.emergencyPhone" defaultCode="EG" hint="" error="compound.add.phonhint"
+              formControlName="emergencyPhone"></app-phone-form>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "compound.add.mail" | translate }}</mat-label>
+              <input matInput formControlName="email" />
+              <mat-error>{{ "compound.add.mailhint" | translate }}</mat-error>
+            </mat-form-field>
+          </p>
+          <p>
+            <button (click)="submit()" class="w-100" mat-raised-button color="accent" [class.spinner]="loading"
+              [disabled]="loading || compoundContactForm.invalid || compoundLocationForm.invalid || compoundNameImageForm.invalid">
+              <span color="white">{{ "compound.add.save" | translate }}</span>
+            </button>
+          </p>
+        </mat-step>
+      </mat-vertical-stepper>
+    </div>
+  </div>
+</app-form-layout>

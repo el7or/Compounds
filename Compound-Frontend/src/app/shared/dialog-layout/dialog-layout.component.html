@@ -1,0 +1,5 @@
+<mat-dialog-content>{{massage|translate}}</mat-dialog-content>
+<mat-dialog-actions class="float-right">
+  <button mat-button disableRipple matDialogClose>{{'dialog.no'|translate}}</button>
+  <button mat-button disableRipple class="ml-4" [mat-dialog-close]="true" cdkFocusInitial>{{'dialog.yes'|translate}}</button>
+</mat-dialog-actions>

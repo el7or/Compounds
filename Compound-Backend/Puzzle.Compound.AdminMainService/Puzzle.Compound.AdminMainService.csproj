@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>32a9aa3f-416f-4ab1-ad27-d0855f75225d</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+    <PackageReference Include="AutoWrapper.Core" Version="4.4.0" />
+    <PackageReference Include="AWSSDK.S3" Version="3.5.8.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Puzzle.Compound.Amazon\Puzzle.Compound.Amazon.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Authorization\Puzzle.Compound.Authorization.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Common\Puzzle.Compound.Common.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Core\Puzzle.Compound.Core.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Data\Puzzle.Compound.Data.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Mapper\Puzzle.Compound.Mapper.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Models\Puzzle.Compound.Models.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Security\Puzzle.Compound.Security.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Services\Puzzle.Compound.Services.csproj" />
+  </ItemGroup>
+
+
+</Project>

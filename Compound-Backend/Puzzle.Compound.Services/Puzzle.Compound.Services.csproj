@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
+    <PackageReference Include="QRCoder" Version="1.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Puzzle.Compound.Amazon\Puzzle.Compound.Amazon.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Common\Puzzle.Compound.Common.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Core\Puzzle.Compound.Core.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Data\Puzzle.Compound.Data.csproj" />
+    <ProjectReference Include="..\Puzzle.Compound.Models\Puzzle.Compound.Models.csproj" />
+  </ItemGroup>
+
+</Project>

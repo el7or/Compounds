@@ -1,0 +1,62 @@
+.example-header-image {
+  background-image: url("/assets/images/download.jpg");
+  background-size: cover;
+  right: 185px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+// body{
+//   overflow-x: hidden;
+// }
+table {
+  width: 100%;
+}
+::ng-deep .matformfield{
+  background-color:transparent;
+  width:550px;
+}
+// th{
+//   letter-spacing: 2px;
+// }
+mat-icon{
+  color:rgb(170, 167, 167);
+  margin-right: 10px;
+}
+td.mat-cell{
+  border-bottom-style: none;
+}
+th.mat-header-cell{
+  background-color:#F5F0FA;
+}
+// mat-menu{
+//   margin-top: -27px;
+// }
+
+mat-paginator{
+  background-color:transparent;
+  ::ng-deep.mat-paginator{background-color:transparent;}
+  // override material paginator page switch
+  ::ng-deep .mat-paginator-range-label {
+      display: none;
+  }
+  ::ng-deep .mat-paginator-page-size {
+      display: none;
+  }
+  ::ng-deep.mat-paginator-page-size-label{
+    display: none;
+  }
+
+  ::ng-deep.mat-form-field-appearance-legacy {
+    display: none;
+  }
+  ::ng-deep.mat-form-field-wrapper{
+    display: none;
+  }
+}
+
+mat-chip{
+  margin: 0 !important;
+}
+
+

@@ -1,0 +1,18 @@
+<div class="container-fluid h-100" [ngClass]="'currentTheme' | translate" >
+ 
+    <div class="row h-100">
+        <img class="layer-0"
+             src="/assets/images/Mask Group 37.svg" />
+        <div class="col align-self-center">
+            <ng-content></ng-content>
+        </div>
+
+        <div class="col d-none d-xl-block">
+            <div class="layer-5"></div>
+            <div class="layer-2"></div>
+
+            <img class="layer-3" [src]="image" />
+            <img class="layer-4" src="/assets/images/Mask Group 43.svg" />
+        </div>
+    </div>
+</div>

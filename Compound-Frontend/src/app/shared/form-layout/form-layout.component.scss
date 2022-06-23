@@ -1,0 +1,84 @@
+.layer-0 {
+  position: absolute;
+  width: 174px;
+  height: 180px;
+  top: 0px;
+  .ltr & {
+    left: 0px;
+  }
+  .rtl & {
+    right: 0px;
+  }
+}
+.layer-1 {
+  position: absolute;
+  width: 700px;
+  height: 100vh;
+  .ltr & {
+    right: 700px;
+  }
+  .rtl & {
+    left: 700px;
+  }
+}
+.layer-5 {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: url("/assets/images/Group 1090@2x.png") no-repeat padding-box;
+  background-size: 67%;
+  .ltr & {
+    right: 0px;
+    border-radius: 50px 0 0 50px;
+  }
+  .rtl & {
+    left: 0px;
+    border-radius: 50px 0 0 50px;
+  }
+}
+.layer-2 {
+  position: absolute;
+  width: 33vw;
+  height: 100vh;
+  background: #8057a7 url("/assets/images/Group 1293@2x.png") 70% 0% no-repeat
+    padding-box;
+  background-size: 500px;
+  .ltr & {
+    right: 0px;
+    border-radius: 50px 0 0 50px;
+  }
+  .rtl & {
+    left: 0;
+    border-radius: 0 50px 50px 0;
+  }
+}
+
+.layer-3 {
+  position: absolute;
+  width: 600px;
+  top: 15vh;
+  height: 70%;
+  .ltr & {
+    right: 25%;
+  }
+  .rtl & {
+    left: 25%;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+}
+.layer-4 {
+  position: absolute;
+  width: 196px;
+  height: 175px;
+  bottom: 0px;
+  .ltr & {
+    right: 32vw;
+  }
+  .rtl & {
+    left: 32vw;
+  }
+}
+
+
+

@@ -1,0 +1,111 @@
+<app-layout [showCompoundList]="true" [ngClass]="'currentTheme' | translate">
+  <mat-card class="mat-elevation-z4 m-5 mt-5">
+    <div class="Header">
+      <h3 *ngIf="statusParam == null" class="mb-3" color="primary">{{'owners.list.registeredUsers' | translate}}</h3>
+      <h3 *ngIf="statusParam == 'false'" class="mb-3" color="primary">{{'owners.list.pendingUsers' | translate}}</h3>
+    </div>
+    <div class="row">
+      <div class="col-md-6" ngClass=" languageService.lang == 'en'? 'text-left' : 'text-right'">
+        <mat-form-field [class]="'matformfield ' + (languageService.lang == 'en'? 'float-left' : 'float-right')" appearance="outline">
+          <mat-icon matPrefix class="ml-1 search-icon">search</mat-icon>
+          <input matInput (keyup.enter)="applyFilter($event)" [matTooltip]="'owners.list.searchHint' | translate"
+            matTooltipPosition="above" autocomplete="off" placeholder="{{'owners.list.search' | translate}}" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col-md-4" *ngIf="!loading">
+        <mat-paginator *ngIf="totalItems" class="paginat" ngClass=" languageService.lang == 'en'? 'float-left' : 'float-right'" style-paginator [length]="totalItems"
+          [pageSize]="listPaging.pageSize" [pageSizeOptions]="[3, 5, 10, 20]" [pageIndex]="listPaging.pageNumber - 1"
+          (page)="onPageChange($event.pageIndex)">
+        </mat-paginator>
+      </div>
+      <div class="col-md-12" *ngIf="!loading">
+        <table mat-table [dataSource]="dataSource" class="Header">
+
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{(i + 1 + listPaging.pageSize * ((listPaging.pageNumber || 1) -1))}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef>{{'owners.list.name' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}
+              <!-- <div class="row mt-3">
+                <div class="mr-3">
+                  <button mat-icon-button class="example-icon favorite-icon">
+                    <img class="example-header-image" />
+                  </button>
+                </div>
+                <div>
+                  <span>
+                    <p class="mb-0" style="color: black"></p>
+                    <p style="color: grey">ayathosam20@gmail.com</p>
+                  </span>
+                </div>
+              </div> -->
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef>{{'owners.list.phone' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>{{'owners.list.email' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+          </ng-container>
+          <ng-container matColumnDef="userConfirmed">
+            <th mat-header-cell *matHeaderCellDef>{{'owners.list.status' | translate}}</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-chip-list aria-label="userConfirmed">
+                <mat-chip *ngIf="element.userConfirmed" color="primary" selected>{{'owners.list.confirmed' | translate}}
+                </mat-chip>
+                <mat-chip *ngIf="!element.userConfirmed" color="warn" selected>{{'owners.list.pending' | translate}}
+                </mat-chip>
+              </mat-chip-list>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="units">
+            <th mat-header-cell *matHeaderCellDef>{{'owners.list.units' | translate}}</th>
+            <td mat-cell *matCellDef="let element">{{ element.unit }}</td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>{{'owners.list.action' | translate}}</th>
+            <td mat-cell *matCellDef="let element">
+              <button  *ngIf="currentUserService.checkRolePageAction(SystemPageActions.RegisteredUsersCancel)
+              || currentUserService.checkRolePageAction(SystemPageActions.RegisteredUsersConfirmed)" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <mat-icon style="color: gray; transform: rotate(90deg)">more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <!-- <button mat-menu-item>
+                  <mat-icon>mode_edit</mat-icon>
+                  <span>Edit</span>
+                </button>
+                <button mat-menu-item (click)="openDialog($event)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Delete</span>
+                </button> -->
+                <ng-container *ngIf="!element.userConfirmed">
+                  <button mat-menu-item   (click)="confirmUser(element)">
+                    <mat-icon>person_add</mat-icon>
+                    <span>{{'owners.list.confirm' | translate}}</span>
+                  </button>
+                  <mat-divider></mat-divider>
+                </ng-container>
+                <button mat-menu-item *ngIf="currentUserService.checkRolePageAction(SystemPageActions.RegisteredUsersCancel)" (click)="cancelUser()">
+                  <mat-icon>person_add_disabled</mat-icon>
+                  <span>{{'owners.list.cancel' | translate}}</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    </div>
+  </mat-card>
+
+</app-layout>

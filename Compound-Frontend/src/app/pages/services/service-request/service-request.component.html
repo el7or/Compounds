@@ -1,0 +1,185 @@
+<div class="container-fluid Header">
+  <div class="ar-style">
+    <div class="mat-display-1 mb-3 mt-5" color="primary">
+      <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+        <mat-icon style="color: black">close</mat-icon>
+      </button>
+      {{'services.request.details' | translate}}
+      <span *ngIf="serviceRequest" [ngClass]="{'status-pending' : serviceRequest.status == 0,
+          'status-done' : serviceRequest.status == 1 , 'status-cancelled' : serviceRequest.status == 2 }">
+        {{ serviceRequest.status ==1 ? ('services.list.done' | translate) :
+        serviceRequest.status == 2 ? ('services.list.cancelled' | translate) :
+        ('services.list.pending' | translate) }}
+      </span>
+    </div>
+    <mat-divider class="mb-3"></mat-divider>
+  </div>
+  <mat-card class="mat-elevation-z4 m-5 mt-5">
+    <div class="row" *ngIf="serviceRequest">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="service-icon">
+              <img width="48px" height="45px" src="{{serviceRequest.icon}}" />
+            </div>
+          </div>
+          <div class="col-md-8">
+            <span style="position: absolute;top: 40%;">{{languageService.lang == 'en' ?
+              serviceRequest.serviceTypeEnglish : serviceRequest.serviceTypeArabic}}</span>
+          </div>
+        </div>
+
+        <div style="position: relative;">
+          <p class="service-comment-reply">{{'services.request.reply' | translate}}</p>
+          <div class="service-comment">
+            <p class="comment-txt">
+              <textarea class="comment-txt" [(ngModel)]="serviceRequest.comment"></textarea>
+            </p>
+          </div>
+        </div>
+        <div class="screen-actions">
+          <button [disabled]="loading || !serviceRequest.comment" mat-raised-button color="accent"
+            (click)="sendComment()">
+            <span color="white">
+              {{ "services.request.send" | translate }}
+            </span>
+          </button>
+          <button [disabled]="loading || !serviceRequest.comment" mat-raised-button color="accent"
+            (click)="sendAndDone()" *ngIf="serviceRequest.status==0">
+            <span color="white">
+              {{ "services.request.sendAndDone" | translate }}
+            </span>
+          </button>
+          <div class="w-100">
+            <button (click)="rightDrawer.close()" class="w-100" mat-raised-button [class.spinner]="loading"
+              [disabled]="loading">
+              <span>{{ "visits.view.back" | translate}}</span>&nbsp;
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="row mt-3">
+            <div class="mr-3 User-style">
+              <button mat-icon-button class="example-icon favorite-icon">
+                <img class="example-header-image" />
+              </button>
+            </div>
+            <div>
+              <span>
+                <p class="mb-0" style="color: black">{{ serviceRequest.ownerName }}</p>
+                <p style="color: grey">{{serviceRequest.ownerPhone}}</p>
+              </span>
+            </div>
+          </div>
+          <div style="margin: 0 40px 0px 40px;" *ngIf="serviceRequest.status==0">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon style="color: gray; transform: rotate(90deg)">more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openDoneDialog($event,serviceRequest.serviceRequestId)">
+                <mat-icon>check</mat-icon>
+                <span>{{'services.list.markDone' | translate}}</span>
+              </button>
+              <button mat-menu-item (click)="openCancelDialog($event,serviceRequest.serviceRequestId)">
+                <mat-icon>cancel</mat-icon>
+                <span>{{'services.list.cancel' | translate}}</span>
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+        <table>
+          <tbody>
+            <tr>
+              <td style="width: 30%;">{{'services.request.id' | translate}}</td>
+              <td>{{serviceRequest.requestNumber}}</td>
+            </tr>
+            <tr>
+              <td style="width: 30%;">{{'services.request.date' | translate}}</td>
+              <td>{{serviceRequest.postTime | date : 'dd-MM-yyyy'}}</td>
+            </tr>
+            <tr style="color: green;">
+              <td style="width: 30%;">{{'services.request.from' | translate}}</td>
+              <td>{{serviceRequest.from | date : 'hh:mm a'}}</td>
+            </tr>
+            <tr style="color: red;">
+              <td style="width: 30%;">{{'services.request.to' | translate}}</td>
+              <td>{{serviceRequest.to | date : 'hh:mm a'}}</td>
+            </tr>
+            <tr>
+              <td style="width: 30%;">{{'services.request.type' | translate}}</td>
+              <td>{{languageService.lang == 'en' ? serviceRequest.serviceTypeEnglish :
+                serviceRequest.serviceTypeArabic}}</td>
+            </tr>
+            <tr>
+              <td style="width: 30%;">{{'services.request.unit' | translate}}</td>
+              <td>{{ serviceRequest.unitName }}</td>
+            </tr>
+            <tr>
+              <td style="width: 30%;">{{'services.request.note' | translate}}</td>
+              <td>{{ serviceRequest.note }}</td>
+            </tr>
+            <tr>
+              <td style="width: 30%;">{{'services.request.comment' | translate}}</td>
+              <td>{{ serviceRequest.comment }}</td>
+            </tr>
+            <tr *ngIf="serviceRequest.ownerComment">
+              <td style="width: 30%;">{{'services.request.ownerComment' | translate}}</td>
+              <td>{{ serviceRequest.ownerComment }}</td>
+            </tr>
+            <tr *ngIf="serviceRequest.rate">
+              <td style="width: 30%;">{{'services.request.rate' | translate}}</td>
+              <td>{{ serviceRequest.rate }} / 5</td>
+            </tr>
+            <tr *ngIf="serviceRequest.presenterRate">
+              <td style="width: 30%;">{{'services.request.presenterRate' | translate}}</td>
+              <td>{{ serviceRequest.presenterRate }} / 5</td>
+            </tr>
+            <tr *ngIf="serviceRequest.record">
+              <td style="width: 30%;">{{'services.request.record' | translate}}</td>
+              <td><button class="play-record" (click)="playRecord()"></button></td>
+            </tr>
+          </tbody>
+        </table>
+        <table *ngIf="serviceRequest.serviceSubTypes" class="table table-bordered table-sm mt-3">
+          <thead>
+            <tr class="table-active">
+              <th>{{'services.request.serviceSubTypes' | translate}}</th>
+              <th>{{'services.request.subTypeCost' | translate}}</th>
+              <th>{{'services.request.subTypeQuantity' | translate}}</th>
+              <th>{{'services.request.subTypeTotal' | translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let subType of serviceRequest.serviceSubTypes">
+              <td>{{languageService.lang == 'en' ? subType.serviceSubTypeEnglish : subType.serviceSubTypeArabic}}</td>
+              <td>{{ subType.serviceSubTypeCost }} $</td>
+              <td>{{ subType.serviceSubTypeQuantity }}</td>
+              <td>{{ subType.serviceSubTypeCost! * subType.serviceSubTypeQuantity! }} $</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="table-primary">
+              <th colspan="3">{{'services.request.serviceSubTypesTotalCost' | translate}}</th>
+              <td>{{ serviceRequest.serviceSubTypesTotalCost }} $</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="col-md-12" style="margin-top: 20px;"
+        *ngIf="serviceRequest.attachments && serviceRequest.attachments.length > 0">
+        <mat-carousel timings="250ms ease-in" [autoplay]="false" [interval]="5000" color="accent" maxWidth="auto"
+          [proportion]="50" [loop]="true"
+          [hideArrows]="serviceRequest.attachments && serviceRequest.attachments.length > 0 ? false : true"
+          [hideIndicators]="serviceRequest.attachments && serviceRequest.attachments.length > 0 ? false : true"
+          [useKeyboard]="true" [useMouseWheel]="false">
+          <mat-carousel-slide *ngFor="let slide of serviceRequest.attachments; let i = index" [image]="slide"
+            overlayColor="#00000040" [hideOverlay]="true">
+          </mat-carousel-slide>
+        </mat-carousel>
+      </div>
+    </div>
+  </mat-card>

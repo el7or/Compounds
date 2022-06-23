@@ -1,0 +1,141 @@
+<app-layout [showCompoundList]="true" [ngClass]="'currentTheme' | translate">
+  <div class="container-fluid" *ngIf="selectedCompound">
+    <div class="row">
+      <div class="col-5">
+        <h3 class="recent-comounds   mt-1" color="black">
+          {{languageService.getName(selectedCompound)}}
+        </h3>
+        <h3 class="recent-comounds  mt-3" color="primary">
+          <span class="mb-0"> {{'tree.title' | translate}}</span>
+          <span class="root">
+            <button (click)="openGroupForm({compoundId:selectedCompound.compoundId,compoundGroupId:null},false,true)"
+              class="mb-2" color="accent" mat-raised-button>
+              <span color="white">{{'tree.rootButton' | translate}}</span>
+            </button>
+          </span>
+        </h3>
+        <button mat-raised-button *ngIf="dataSource" (click)="import.click()" class="green">
+          {{ 'tree.import' | translate }}
+          <mat-icon>upload_file</mat-icon>
+        </button>
+        <input type="file" #import (change)="onImportExcel($event)" hidden
+          accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        <a mat-stroked-button href="../../../../assets/templates/Compond-Owners-Templete.xlsx" target="_blank"
+          class="float-left" [matTooltip]="'tree.importTempInfo' | translate" matTooltipPosition="above">
+          {{ 'tree.importTemp' | translate }}
+          <mat-icon>download</mat-icon>
+        </a>
+        <div *ngIf="progressBarValue > 0 && progressBarValue < 100" class="mt-3">
+          <mat-label color="primary" class="progressbar-label"
+            [ngStyle]="{'float': languageService.lang == 'ar' ? 'left' : 'right' }">
+            {{uploadedDataExcelCount}} / {{dataExcelCount}}</mat-label>
+          <mat-progress-bar mode="buffer" [value]="progressBarValue"></mat-progress-bar>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-5 mt-3">
+        <mat-card class="mat-elevation-z4 tree-card">
+          <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+            <mat-tree-node [class.active-node]="selectedNode==node" *matTreeNodeDef="let node"
+              (contextmenu)="onContextMenu($event, node)" matTreeNodePadding>
+              <button mat-icon-button (click)="selectNode(node)">
+                <mat-icon color="gray">
+                  {{getNodeIcon(node)}}
+                </mat-icon>
+                {{languageService.getName(node)}}
+              </button>
+            </mat-tree-node>
+            <mat-tree-node [class.active-node]="selectedNode==node" *matTreeNodeDef="let node;when: hasChild"
+              (contextmenu)="onContextMenu($event, node)" matTreeNodePadding>
+              <button mat-icon-button (click)="selectNode(node)" [attr.aria-label]="'Toggle ' + node.name"
+                matTreeNodeToggle>
+                <mat-icon color="gray">
+                  {{getNodeIcon(node)}}
+                </mat-icon>
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+                {{languageService.getName(node)}}
+              </button>
+            </mat-tree-node>
+          </mat-tree>
+        </mat-card>
+      </div>
+      <div class="Info col-lg-7 mt-3">
+        <mat-card class="mat-elevation-z4" *ngIf="selectedNode">
+
+          <h2 *ngIf="selectedNode.treeNodeType==TreeNodeType.group">{{'tree.compoundGroups' | translate}}</h2>
+          <h2 *ngIf="selectedNode.treeNodeType==TreeNodeType.unit">{{'tree.groupUnits' | translate}}</h2>
+          <h2 *ngIf="selectedNode.treeNodeType==TreeNodeType.owner">{{'tree.unitOwner' | translate}}</h2>
+          <h2 *ngIf="selectedNode.treeNodeType==TreeNodeType.subowner">{{'tree.UnitSubOwner' | translate}}</h2>
+          <p>{{'tree.name' | translate}} {{selectedNode.name}}</p>
+          <ng-container *ngIf="selectedNode.treeNodeType==TreeNodeType.subowner">
+            <p>{{'tree.email' | translate}} {{selectedNode.email}}
+            <p>{{'tree.phone' | translate}} {{selectedNode.phone}}</p>
+            <p>{{'tree.userType' | translate }} {{ 'visits.view.' + selectedNode.userType | translate}}</p>
+          </ng-container>
+          <p *ngIf="treeControl.isExpanded(selectedNode)">{{'tree.Contains' | translate}}
+            <span *ngIf="selectedNode.subGroupsCount>0">{{selectedNode.subGroupsCount}} {{'tree.group' |
+              translate}}</span>
+            <span *ngIf="selectedNode.unitsCount>0">{{selectedNode.unitsCount}} {{'tree.unit' | translate}}</span>
+            <span *ngIf="selectedNode.ownersCount>0">{{selectedNode.ownersCount}} {{'tree.owner' | translate}} </span>
+            <span *ngIf="selectedNode.subOwners>0">{{selectedNode.subOwners}} {{'tree.subowner' | translate}} </span>
+          </p>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</app-layout>
+
+
+<div style="visibility: hidden; position: fixed" [style.left]="contextMenuPosition.x"
+  [style.top]="contextMenuPosition.y" [matMenuTriggerFor]="contextMenu">
+</div>
+<mat-menu #contextMenu="matMenu">
+  <ng-template matMenuContent let-item="item">
+
+    <button mat-menu-item (click)="deleteGroup(item)"
+      *ngIf="item.treeNodeType==TreeNodeType.group && !treeDataMapService.isExpandable(item)">
+      <mat-icon>delete</mat-icon>
+      {{'tree.delete' | translate}}
+    </button>
+    <button mat-menu-item (click)="openGroupForm(item,true)" *ngIf="item.treeNodeType==TreeNodeType.group">
+      <mat-icon>edit</mat-icon>
+      {{'tree.edit' | translate}}
+    </button>
+    <button mat-menu-item (click)="openGroupForm(item,false)" *ngIf="item.unitsCount==0">
+      <mat-icon>apartment</mat-icon>
+      {{'tree.addgroupbtn' | translate}}
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="deleteUnit(item)"
+      *ngIf="item.treeNodeType==TreeNodeType.unit && !treeDataMapService.isExpandable(item)">
+      <mat-icon>delete</mat-icon>
+      {{'tree.deleteUnitBtn' | translate}}
+    </button>
+    <button mat-menu-item (click)="openUnitForm(item,true)" *ngIf="item.treeNodeType==TreeNodeType.unit">
+      <mat-icon>edit</mat-icon>
+      {{'tree.editUnitBtn' | translate}}
+    </button>
+    <button mat-menu-item (click)="openUnitForm(item,false)" *ngIf="item.subGroupsCount==0">
+      <mat-icon>house</mat-icon>
+      {{'tree.addUnitBtn' | translate}}
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="deleteOwner(item)"
+      *ngIf="item.treeNodeType==TreeNodeType.owner && !treeDataMapService.isExpandable(item)">
+      <mat-icon>delete</mat-icon>
+      {{'tree.deleteOwner' | translate}}
+    </button>
+    <button mat-menu-item (click)="openOwnerForm(item,true)" *ngIf="item.treeNodeType==TreeNodeType.owner">
+      <mat-icon>edit</mat-icon>
+      {{'tree.editOwner' | translate}}
+    </button>
+    <button mat-menu-item (click)="openOwnerForm(item,false)" *ngIf="item.treeNodeType==TreeNodeType.unit">
+      <mat-icon>add_reaction</mat-icon>
+      {{'tree.addOwner' | translate}}
+    </button>
+    <mat-divider></mat-divider>
+  </ng-template>
+</mat-menu>

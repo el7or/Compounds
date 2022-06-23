@@ -1,0 +1,156 @@
+<div class="container-fluid Header">
+  <div class="ar-style">
+    <div class="mat-display-1 mb-3 mt-5" color="primary">
+      <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+        <mat-icon style="color: black">close</mat-icon>
+      </button>
+      {{ "visits.view.title" | translate }}
+    </div>
+    <mat-divider class="mb-3"></mat-divider>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <mat-card class="mat-elevation-z4 col">
+          <div class="w-100">
+            <h3>{{ "visits.view.visitData" | translate }}</h3>
+
+            <mat-form-field *ngIf="visitDetails.code" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.code" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.code" disabled />
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.ownerName" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.requesterName" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.ownerName" disabled />
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.userType" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.userType" | translate }}</mat-label>
+              <input matInput [value]="'visits.view.' + visitDetails.userType | translate" disabled />
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.unitName" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.unitName" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.unitName" disabled />
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.visitorName" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.visitorName" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.visitorName" disabled />
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.type" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.type" | translate }}</mat-label>
+              <input matInput [value]="'visits.list.' + visitDetails.type | translate" disabled />
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.status" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.status" | translate }}</mat-label>
+              <input matInput [value]="'visits.list.' + visitDetails.status | translate" disabled />
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.dateFrom" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.dateFrom" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.dateFrom | date : 'dd-MM-yyyy h:mm a'" disabled />
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.dateTo" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.dateTo" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.dateTo | date : 'dd-MM-yyyy h:mm a'" disabled />
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.groupNo" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.groupNo" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.groupNo" disabled />
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.days.length" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.days" | translate }}</mat-label>
+              <mat-chip-list disabled>
+                <mat-chip *ngFor="let day of visitDetails.days">{{ "visits.view." + day | translate }}</mat-chip>
+              </mat-chip-list>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.carNo" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.carNo" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.carNo" disabled />
+            </mat-form-field>
+
+            <mat-form-field *ngIf="visitDetails.details" appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.details" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.details" disabled />
+            </mat-form-field>
+
+            <form [formGroup]="form" *ngIf="visitDetails.type == 'Labor' && !visitDetails.attachments.length"
+              class="mat-form-field">
+              <app-upload-file [error]="!form.get('attachments')?.value ? 'visits.view.attachmentsHint' : null"
+                formControlName="attachments" label="visits.view.attachments" hint="image.attachmentsHint"
+                [isRequired]="true" [isMultiple]="true"></app-upload-file>
+            </form>
+
+            <div *ngIf="visitDetails.attachments.length">
+              <mat-label>{{ "visits.view.attachments" | translate }}</mat-label>
+              <mat-carousel timings="250ms ease-in" [autoplay]="false" [interval]="5000" color="accent" maxWidth="auto"
+                [proportion]="50" [loop]="true" [hideArrows]="!form.get('attachments')?.value ? true : false"
+                [hideIndicators]="!form.get('attachments')?.value ? true : false" [useKeyboard]="true"
+                [useMouseWheel]="false">
+                <mat-carousel-slide *ngIf="!form.get('attachments')?.value" overlayColor="#00000040"
+                  [hideOverlay]="true"></mat-carousel-slide>
+                <mat-carousel-slide *ngFor="let slide of form.get('attachments')?.value; let i = index"
+                  [image]="slide.fileBase64 ? 'data:image/jpeg;base64,'+slide.fileBase64 : slide.path"
+                  overlayColor="#00000040" [hideOverlay]="true">
+                </mat-carousel-slide>
+              </mat-carousel>
+            </div>
+
+            <button
+              *ngIf="currentUserService.checkRolePageAction(SystemPageActions.VisitConfirm) &&  (!visitDetails.isConfirmed && visitDetails.type == 'Group') || (!visitDetails.attachments.length && visitDetails.type == 'Labor')"
+              (click)="onConfirm()" class="w-100 mt-3" mat-raised-button color="accent" [class.spinner]="loading"
+              [disabled]="loading || form.invalid">
+              <span *ngIf="visitDetails.type == 'Group'" color="white">{{ "visits.view.confirm" | translate}}</span>
+              <span *ngIf="visitDetails.type == 'Labor'" color="white">{{ "visits.view.saveConfirm" | translate}}</span>
+            </button>
+          </div>
+        </mat-card>
+      </div>
+      <div class="col">
+        <mat-card class="mat-elevation-z4">
+          <div class="w-100">
+            <h3>{{'visits.view.ownerData' | translate}}</h3>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.ownerName" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.owner.name" disabled />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.phone" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.owner.phone" disabled />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.email" | translate }}</mat-label>
+              <input matInput [value]="visitDetails.owner.email" disabled />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "visits.view.units" | translate }}</mat-label>
+              <mat-chip-list disabled>
+                <mat-chip *ngFor="let unit of visitDetails.owner.units">{{ unit }}</mat-chip>
+              </mat-chip-list>
+            </mat-form-field>
+
+          </div>
+        </mat-card>
+        <div class="w-100 mt-5">
+          <button (click)="rightDrawer.close()" class="w-100" mat-raised-button [class.spinner]="loading"
+            [disabled]="loading">
+            <span>{{ "visits.view.back" | translate}}</span>&nbsp;
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

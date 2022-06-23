@@ -1,0 +1,228 @@
+<div class="container-fluid Header">
+  <div class="ar-style">
+    <div class="mat-display-1 mb-3 mt-5" color="primary">
+      <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+        <mat-icon style="color: black">close</mat-icon>
+      </button>
+      {{ newsId ? ('news.form.edit' | translate) : ('news.form.compose' | translate)}}
+    </div>
+    <mat-divider class="mb-3"></mat-divider>
+  </div>
+  <div class="container">
+    <mat-card class="mat-elevation-z4 col">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="Header">
+              <h3>{{'news.form.details' | translate}}</h3>
+            </div>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "news.form.englishTitle" | translate }}</mat-label>
+              <input matInput formControlName="englishTitle" #englishTitle maxlength="100" autocomplete="off" />
+              <mat-hint>100/{{englishTitle.value?.length || 0}}</mat-hint>
+              <mat-error>{{ ("news.form.englishTitle" | translate) + ("news.form.requiredHint" | translate) }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "news.form.arabicTitle" | translate }}</mat-label>
+              <input matInput formControlName="arabicTitle" #arabicTitle maxlength="100" autocomplete="off" />
+              <mat-hint>100/{{arabicTitle.value?.length || 0}}</mat-hint>
+              <mat-error>{{ ("news.form.arabicTitle" | translate) + ("news.form.requiredHint" | translate) }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "news.form.englishSummary" | translate }}</mat-label>
+              <input matInput formControlName="englishSummary" #englishSummary maxlength="250" autocomplete="off" />
+              <mat-hint>250/{{englishSummary.value?.length || 0}}</mat-hint>
+              <mat-error>{{ ("news.form.englishSummary" | translate) + ("news.form.requiredHint" | translate) }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "news.form.arabicSummary" | translate }}</mat-label>
+              <input matInput formControlName="arabicSummary" #arabicSummary maxlength="250" autocomplete="off" />
+              <mat-hint>250/{{arabicSummary.value?.length || 0}}</mat-hint>
+              <mat-error>{{ ("news.form.arabicSummary" | translate) + ("news.form.requiredHint" | translate) }}
+              </mat-error>
+            </mat-form-field>
+
+            <div class="mat-form-field">
+              <editor formControlName="englishDetails" apiKey="453j3kfpj3lqmji9dnw0u7owlljuhidx0c785b4diqps81fd" [init]="{placeholder: ('news.form.englishDetails' | translate),
+              directionality :languageService.lang == 'en' ? 'ltr' : 'rtl',
+              icons: 'material',
+              min_height: 400,
+              plugins: 'print preview importcss tinydrive searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+              tinydrive_token_provider: 'URL_TO_YOUR_TOKEN_PROVIDER',
+              tinydrive_dropbox_app_key: 'YOUR_DROPBOX_APP_KEY',
+              tinydrive_google_drive_key: 'YOUR_GOOGLE_DRIVE_KEY',
+              tinydrive_google_drive_client_id: 'YOUR_GOOGLE_DRIVE_CLIENT_ID',
+              menu: {
+              tc: {
+              title: 'Comments',
+              items: 'addcomment showcomments deleteallconversations'
+              }
+              },
+              menubar: 'file edit view insert format tools table tc help',
+              toolbar: 'undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | fontselect fontsizeselect formatselect | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
+              autosave_ask_before_unload: true,
+              autosave_interval: '30s',
+              autosave_prefix: '{path}{query}-{id}-',
+              autosave_restore_when_empty: false,
+              autosave_retention: '2m',
+              image_advtab: true,
+              link_list: [
+              { title: 'My page 1', value: 'https://www.tiny.cloud' },
+              { title: 'My page 2', value: 'http://www.moxiecode.com' }
+              ],
+              importcss_append: true,
+              image_caption: true,
+              quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+              noneditable_noneditable_class: 'mceNonEditable',
+              toolbar_mode: 'sliding',
+              spellchecker_ignore_list: ['Ephox', 'Moxiecode'],
+              tinycomments_mode: 'embedded',
+              content_style: '.mymention{ color: gray; }',
+              contextmenu: 'link image imagetools table configurepermanentpen',
+              a11y_advanced_options: true,
+              skin: 'oxide',
+              content_css: 'default'}">
+              </editor>
+              <mat-error *ngIf="form.get('englishDetails')?.touched && form.get('englishDetails')?.invalid">
+                {{ ("news.form.englishDetails" | translate) + ("news.form.requiredHint" | translate) }}
+              </mat-error>
+            </div>
+
+            <div class="mat-form-field">
+              <editor formControlName="arabicDetails" apiKey="453j3kfpj3lqmji9dnw0u7owlljuhidx0c785b4diqps81fd" [init]="{placeholder: ('news.form.arabicDetails' | translate),
+              directionality :languageService.lang == 'en' ? 'ltr' : 'rtl',
+              icons: 'material',
+              min_height: 400,
+              plugins: 'print preview importcss tinydrive searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+              tinydrive_token_provider: 'URL_TO_YOUR_TOKEN_PROVIDER',
+              tinydrive_dropbox_app_key: 'YOUR_DROPBOX_APP_KEY',
+              tinydrive_google_drive_key: 'YOUR_GOOGLE_DRIVE_KEY',
+              tinydrive_google_drive_client_id: 'YOUR_GOOGLE_DRIVE_CLIENT_ID',
+              menu: {
+              tc: {
+              title: 'Comments',
+              items: 'addcomment showcomments deleteallconversations'
+              }
+              },
+              menubar: 'file edit view insert format tools table tc help',
+              toolbar: 'undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | fontselect fontsizeselect formatselect | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
+              autosave_ask_before_unload: true,
+              autosave_interval: '30s',
+              autosave_prefix: '{path}{query}-{id}-',
+              autosave_restore_when_empty: false,
+              autosave_retention: '2m',
+              image_advtab: true,
+              link_list: [
+              { title: 'My page 1', value: 'https://www.tiny.cloud' },
+              { title: 'My page 2', value: 'http://www.moxiecode.com' }
+              ],
+              importcss_append: true,
+              image_caption: true,
+              quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+              noneditable_noneditable_class: 'mceNonEditable',
+              toolbar_mode: 'sliding',
+              spellchecker_ignore_list: ['Ephox', 'Moxiecode'],
+              tinycomments_mode: 'embedded',
+              content_style: '.mymention{ color: gray; }',
+              contextmenu: 'link image imagetools table configurepermanentpen',
+              a11y_advanced_options: true,
+              skin: 'oxide',
+              content_css: 'default'}">
+              </editor>
+              <mat-error *ngIf="form.get('arabicDetails')?.touched && form.get('arabicDetails')?.invalid">
+                {{ ("news.form.arabicDetails" | translate) + ("news.form.requiredHint" | translate) }}
+              </mat-error>
+            </div>
+
+            <app-upload-file [error]="!form.get('images')?.value ? 'news.form.hint' : null" formControlName="images"
+              label="news.form.image" hint="image.ImageHint" [isRequired]="true" [isMultiple]="true"></app-upload-file>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="Header">
+              <h3>{{'news.form.preview' | translate}}</h3>
+            </div>
+            <cdk-virtual-scroll-viewport itemSize="50">
+              <mat-carousel timings="250ms ease-in" [autoplay]="false" [interval]="5000" color="accent" maxWidth="auto"
+                [proportion]="50" [loop]="true" [hideArrows]="!form.get('images')?.value ? true : false"
+                [hideIndicators]="!form.get('images')?.value ? true : false" [useKeyboard]="true"
+                [useMouseWheel]="false">
+                <mat-carousel-slide *ngIf="!form.get('images')?.value" image="assets/images/no-news.png"
+                  overlayColor="#00000040" [hideOverlay]="true"></mat-carousel-slide>
+                <mat-carousel-slide *ngFor="let slide of form.get('images')?.value; let i = index"
+                  [image]="slide.fileBase64 ? 'data:image/jpeg;base64,'+slide.fileBase64 : slide.path"
+                  overlayColor="#00000040" [hideOverlay]="true">
+                </mat-carousel-slide>
+              </mat-carousel>
+              <div class="p-3" [ngClass]="languageService.lang == 'en' ? 'text-left' : 'text-right'">
+                <h3>
+                  {{languageService.lang == 'en' ? form.get('englishTitle')?.value : form.get('arabicTitle')?.value }}
+                </h3>
+                <hr>
+                <h6>
+                  {{languageService.lang == 'en' ? form.get('englishSummary')?.value : form.get('arabicSummary')?.value
+                  }}
+                </h6>
+                <hr>
+                <div
+                  [innerHTML]="languageService.lang == 'en' ? form.get('englishDetails')?.value : form.get('arabicDetails')?.value">
+                </div>
+              </div>
+            </cdk-virtual-scroll-viewport>
+
+            <div class="row">
+              <div class="col-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>{{'news.form.publishDate' | translate}}</mat-label>
+                  <input type="text" formControlName="publishDate" matInput [matDatepicker]="publishDatePicker"
+                    [min]="newsId ? null : today" autocomplete="off" (dateChange)="onSelectPublishDate($event)">
+                  <mat-datepicker-toggle matSuffix [for]="publishDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #publishDatePicker></mat-datepicker>
+                  <mat-error>{{ ("news.form.publishDate" | translate) + ("news.form.requiredHint" | translate) }}
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-6">
+                <timepicker formControlName="publishTime" [showMeridian]="true" labelMinutes="Minutes"
+                  style="direction: ltr">
+                </timepicker>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>{{'news.form.foregroundTillDate' | translate}}</mat-label>
+                  <input type="text" formControlName="foregroundTillDate" matInput
+                    [matDatepicker]="foregroundTillDatePicker" [min]="form.get('publishDate')?.value" autocomplete="off"
+                    (dateChange)="onSelectForegroundTillDate($event)">
+                  <mat-datepicker-toggle matSuffix [for]="foregroundTillDatePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #foregroundTillDatePicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-6">
+                <timepicker formControlName="foregroundTillTime" [showMeridian]="true" labelMinutes="Minutes"
+                  style="direction: ltr">
+                </timepicker>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12 screen-actions">
+            <button *ngIf="currentUserService.checkRolePageAction(SystemPageActions.NewsEdit)" [class.spinner]="loading"
+              [disabled]="loading || form.invalid" mat-raised-button color="accent" (click)="onSubmit()">
+              <span color="white">
+                {{ newsId ? ("news.form.editBtn" | translate) : ("news.form.addBtn" | translate) }}</span>
+            </button>
+            <button mat-raised-button (click)="rightDrawer.close()">
+              {{ "news.form.cancel" | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>

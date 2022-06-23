@@ -1,0 +1,77 @@
+<mat-toolbar color="primary" class="mat-elevation-z4" [ngClass]="'currentTheme' | translate">
+  <img class="position-absolute fixed-top zIndex1" src="/assets/images/Mask Group 37.svg" />
+
+  <ng-container *ngIf="showCompoundList">
+    <button *ngIf="selectedCompound" mat-button (click)="openMenu()">
+      <mat-icon *ngIf="!isMenuOpened">menu</mat-icon>
+      <mat-icon *ngIf="isMenuOpened">menu_open</mat-icon>
+    </button>
+    <ng-container *ngIf="showCompoundList && compounds.length">
+      <button mat-button [matMenuTriggerFor]="menu">
+        <span *ngIf="selectedCompound">{{ languageService.getName(selectedCompound) }}</span>
+        <span *ngIf="!selectedCompound">Select Compound</span>
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item [routerLink]="['/compounds']">
+          {{"navbar.menu.AllCompounds" | translate}}
+        </button>
+        <button mat-menu-item (click)="openForm()">{{"navbar.menu.AddNewCompound" | translate}}</button>
+        <mat-divider></mat-divider>
+        <button *ngFor="let compound of compounds" mat-menu-item [routerLink]="['/' + compound.compoundId + '/' + urlLastSegment]">
+          <span>
+            {{ languageService.getName(compound) }}
+          </span>
+          <span class=" " *ngIf="compound.compoundId == selectedCompound?.compoundId">
+            <mat-icon>done</mat-icon>
+          </span>
+        </button>
+      </mat-menu>
+    </ng-container>
+  </ng-container>
+  <div class="container-fluid mr-3" [ngClass]="'currentTheme' | translate">
+    <button mat-icon-button class="text-light favorite-icon" (click)="changeLang()">
+      {{currentLang}}
+      <span>
+        <mat-icon class="rtlIcon">language</mat-icon>
+      </span>
+    </button>
+    <!-- notification btn -->
+    <span class="mx-5">
+      <button mat-icon-button (click)="notificationDrawerService.open()">
+        <mat-icon color="white" [matBadge]="notificationDrawerService.badge" matBadgeColor="accent">notifications</mat-icon>
+      </button>
+    </span>
+    <!-- notification btn -->
+    <button mat-icon-button [matMenuTriggerFor]="profile">
+      <img class="example-header-image" />
+    </button>
+    <mat-menu #profile="matMenu">
+      <button mat-menu-item [routerLink]="['/profile']">
+        <span>
+          <mat-icon>account_circle</mat-icon>
+        </span>
+        {{"navbar.menu.MyProfile" | translate}}
+      </button>
+      <button mat-menu-item [routerLink]="['/registeredUsers']">
+        <span>
+          <mat-icon>how_to_reg</mat-icon>
+        </span>
+        {{"navbar.menu.RegestreredUsers" | translate}}
+      </button>
+      <button mat-menu-item [routerLink]="['/managementUsers']">
+        <span>
+          <mat-icon>card_membership</mat-icon>
+        </span>
+        {{"navbar.menu.managementUsers" | translate}}
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item [routerLink]="['/auth/login']">
+        <span>
+          <mat-icon style="transform: rotate(180deg)">logout</mat-icon>
+        </span>
+        {{"navbar.menu.Logout" | translate}}
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>

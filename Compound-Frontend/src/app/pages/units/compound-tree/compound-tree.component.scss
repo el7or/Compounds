@@ -1,0 +1,37 @@
+.tree-card {
+  height: calc(100vh - 240px);
+  overflow: auto;
+}
+.active-node {
+  background-color: #8057a7;
+  color: white;
+  mat-icon {
+    color: white;
+  }
+}
+.recent-comounds {
+  .rtl & {
+    text-align: right;
+  }
+  .ltr & {
+    text-align: left;
+  }
+}
+.root {
+  .rtl & {
+    float: left;
+  }
+  .ltr & {
+    float: right;
+  }
+}
+.Info {
+  .rtl & {
+    text-align: right;
+  }
+}
+
+.progressbar-label {
+  font-weight: 600;
+  font-size: 14px;
+}

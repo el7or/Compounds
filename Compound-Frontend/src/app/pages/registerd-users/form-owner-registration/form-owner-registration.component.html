@@ -1,0 +1,200 @@
+<div class="container-fluid Header">
+  <div class="ar-style">
+    <div class="mat-display-1 mb-3 mt-5" color="primary">
+      <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+        <mat-icon style="color: black">close</mat-icon>
+      </button>
+      {{ "unit.formGroup.registerConfirmation" | translate }}
+    </div>
+    <mat-divider class="mb-3"></mat-divider>
+    <!-- <div class="mat-subheading-2" color="gray">
+      {{'unit.formOwner.fill' | translate}}
+    </div> -->
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <mat-card class="mat-elevation-z4 col">
+          <div class="w-100">
+            <h3>{{ "unit.formOwner.registerUser" | translate }}</h3>
+            <p>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "unit.formOwner.name" | translate }}</mat-label>
+                <input matInput [value]="ownerRegistrationInfo.name" disabled />
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "unit.formOwner.email" | translate }}</mat-label>
+                <input matInput [value]="ownerRegistrationInfo.email" disabled />
+              </mat-form-field>
+            </p>
+            <p class="mb-3 mt-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "unit.formOwner.phone" | translate }}</mat-label>
+                <input matInput [value]="ownerRegistrationInfo.phone" disabled />
+              </mat-form-field>
+            </p>
+            <!-- <p class="mb-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "unit.formOwner.whatsApp" | translate }}</mat-label>
+                <input matInput [value]="ownerRegistrationInfo.whatsAppNum" disabled />
+                <mat-error>{{ "unit.formOwner.whatsAppErr" | translate }}</mat-error>
+              </mat-form-field>
+            </p> -->
+            <!-- <p>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{'unit.formOwner.address' | translate}}</mat-label>
+                <input matInput [value]="ownerRegistrationInfo.address" disabled />
+              </mat-form-field>
+            </p> -->
+            <!-- <p>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{'unit.formOwner.birthday' | translate}}</mat-label>
+                <input [value]="ownerRegistrationInfo.birthDate" matInput disabled>
+              </mat-form-field>
+            </p> -->
+            <p>
+              <mat-card>
+                <label>{{'unit.formOwner.usersUnits' | translate}}</label>
+                <div class="row">
+                  <div class="col-11" *ngFor="let unit of registeredUsersUnits; let i=index">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Unit #{{i+1}}</mat-label>
+                      <input type="text" placeholder="Unit No." [value]="unit.name" aria-label="Unit No." matInput
+                        disabled>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </mat-card>
+            </p>
+          </div>
+        </mat-card>
+      </div>
+      <div class="col">
+        <mat-card class="mat-elevation-z4">
+          <div class="w-100" [formGroup]="ownerForm">
+            <h3>{{'unit.formOwner.unitOwnerData' | translate}}</h3>
+            <p>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ 'unit.formOwner.name' | translate }}</mat-label>
+                <input type="text" formControlName="name" matInput [matAutocomplete]="autoName"
+                  [matTooltip]="allOwners.length ? ('unit.formOwner.namePlaceholder' | translate):''"
+                  matTooltipPosition="above" required>
+                <mat-error>{{'unit.formOwner.nameReq' | translate}}</mat-error>
+                <mat-autocomplete autoActiveFirstOption #autoName="matAutocomplete">
+                  <ng-container *ngIf="allOwners.length">
+                    <mat-option *ngFor="let option of filteredOwnersByName | async" [id]="option.compoundOwnerId"
+                      [value]="option.name" (onSelectionChange)="selectOwner($event)">
+                      {{option.name}}
+                    </mat-option>
+                  </ng-container>
+                </mat-autocomplete>
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ 'unit.formOwner.email' | translate }}</mat-label>
+                <input type="text" formControlName="email" matInput [matAutocomplete]="autoEmail"
+                  [matTooltip]="allOwners.length ? ('unit.formOwner.emailPlaceholder' | translate) : ''"
+                  matTooltipPosition="above" required>
+                <mat-error>{{'unit.formOwner.emailErr' | translate}}</mat-error>
+                <mat-autocomplete autoActiveFirstOption #autoEmail="matAutocomplete">
+                  <ng-container *ngIf="allOwners.length">
+                    <mat-option *ngFor="let option of filteredOwnersByEmail | async" [id]="option.compoundOwnerId"
+                      [value]="option.email" (onSelectionChange)="selectOwner($event)">
+                      {{option.email}}
+                    </mat-option>
+                  </ng-container>
+                </mat-autocomplete>
+              </mat-form-field>
+            </p>
+            <p class="mb-3 mt-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ 'unit.formOwner.phone' | translate }}</mat-label>
+                <input type="text" formControlName="phone" matInput [matAutocomplete]="autoPhone"
+                  [matTooltip]="allOwners.length ? ('unit.formOwner.phonePlaceholder' | translate):''"
+                  matTooltipPosition="above" required>
+                <mat-error>{{'unit.formOwner.phoneErr' | translate}}</mat-error>
+                <mat-autocomplete autoActiveFirstOption #autoPhone="matAutocomplete">
+                  <ng-container *ngIf="allOwners.length">
+                    <mat-option *ngFor="let option of filteredOwnersByPhone | async" [id]="option.compoundOwnerId"
+                      [value]="option.phone" (onSelectionChange)="selectOwner($event)">
+                      {{option.phone}}
+                    </mat-option>
+                  </ng-container>
+                </mat-autocomplete>
+              </mat-form-field>
+            </p>
+            <!-- <p class="mb-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "unit.formOwner.whatsApp" | translate }}</mat-label>
+                <input matInput formControlName="whatsAppNum" required />
+                <mat-error>{{ "unit.formOwner.whatsAppErr" | translate }}</mat-error>
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{'unit.formOwner.address' | translate}}</mat-label>
+                <input matInput formControlName="address" required />
+                <mat-error>{{'unit.formOwner.addressReq' | translate}}</mat-error>
+              </mat-form-field>
+            </p>
+            <p>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{'unit.formOwner.birthday' | translate}}</mat-label>
+                <input type="text" formControlName="birthDate" matInput [matDatepicker]="birthdayPicker" [min]="minDate"
+                  [max]="maxDate" required>
+                <mat-datepicker-toggle matSuffix [for]="birthdayPicker"></mat-datepicker-toggle>
+                <mat-datepicker #birthdayPicker startView="multi-year" startAt="1999/1/1"></mat-datepicker>
+                <mat-error>{{ "unit.formOwner.birthDateErr" | translate }}</mat-error>
+              </mat-form-field>
+            </p> -->
+            <p>
+              <mat-card>
+                <div class="row">
+                  <h5>{{ "unit.formOwner.ownerUnits" | translate }}</h5>
+                  <button mat-raised-button color="primary" class="float-right" (click)="addUnite()">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+                <div class="row">
+                  <ng-container [formGroup]="$any(units)" *ngFor="let unit of units.controls; let i=index">
+                    <div class="col-9" [formGroupName]="i">
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>{{ "unit.formOwner.unit" | translate }} #{{i+1}}</mat-label>
+                        <input type="text" placeholder="Unit No." formControlName="filterText" aria-label="Unit No."
+                          matInput [matAutocomplete]="auto">
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                          <mat-option *ngFor="let option of companyUnits" [id]="option.compoundUnitId"
+                            [value]="option.name"
+                            (onSelectionChange)="unit.get('unitId')?.setValue($event.source.id);selectUnit()">
+                            {{option.name}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-3">
+                      <button mat-raised-button color="warn" class="mt-3 ml-3" [disabled]="units.controls.length==1"
+                        (click)="units.removeAt(i);getOwnerUnits.removeAt(i)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </ng-container>
+                </div>
+              </mat-card>
+            </p>
+            <p>
+              <!-- invalid:{{ownerForm.invalid}}
+              value:{{ownerForm.value|json}} -->
+              <button (click)="submit()" class="w-100" mat-raised-button color="accent" [class.spinner]="loading"
+                [disabled]="loading || ownerForm.invalid || units.invalid">
+                <span color="white">{{ "unit.formOwner.save" | translate}}</span>
+              </button>
+            </p>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

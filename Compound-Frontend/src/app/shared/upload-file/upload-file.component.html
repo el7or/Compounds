@@ -1,0 +1,36 @@
+<div [ngClass]="'currentTheme' | translate">
+  <label class="title" color="gray">
+  <span class="danger" *ngIf="isRequired" color="gray"> *</span>
+    {{ label | translate }}</label>
+  <div class="upload-file" matRipple (click)="fileEl.click()">
+    <span>
+      <mat-icon matSuffix>cloud_upload</mat-icon>
+    </span >
+    <span >
+      {{ "upload.drag" | translate }}
+    </span>
+  </div>
+  <div class="images-container">
+    <div class="row">
+      <div *ngFor="let image of imagesArray; let index = index" class="col-3 mt-2">
+        <div class="mat-elevation-z2 card" (click)="deleteImage(index)">
+          <img class="card-img-top" *ngIf="image.fileBase64" [src]="'data:image/png;base64,' + image.fileBase64" />
+          <img class="card-img-top" *ngIf="!image.fileBase64" [src]="image.path" />
+          <span class="delete-image">
+            <mat-icon class="icon" matSuffix>delete</mat-icon>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="error">
+    <label class="image-error ml-3" color="accent">{{ error | translate }}</label>
+  </div>
+  <div *ngIf="inValidSize">
+    <label class="image-error ml-3" color="accent">{{ 'image.inValidSize'|translate:{value:maxFileSize/1024} }}</label>
+  </div>
+  <div *ngIf="hint && !imagesArray.length && !error && !inValidSize">
+    <label class="title" color="gray">{{ hint | translate }}</label>
+  </div>
+  <input name="fielInput" type="file" style="display: none" data-show-caption="true" [multiple]="isMultiple" data-main-class="input-group-md" #fileEl (change)="uploadFiles(fileEl.files)" [accept]="acceptedExtensionsString" [disabled]="isDisabled" (blur)="onTouched()" required />
+</div>

@@ -1,0 +1,141 @@
+<div [ngClass]="'currentTheme' | translate">
+  <button class="fs-1 LangButton" mat-icon-button (click)="changeLang()">
+    {{currentLang}}
+
+    <span>
+      <mat-icon style="padding-top:13px">language</mat-icon>
+    </span>
+  </button>
+</div>
+<app-form-layout [image]="'/assets/images/Group 1086.svg'">
+
+  <div class="custom-center">
+    <div class="ar-style">
+      <div class="mat-display-1 mb-3 mt-5" color="primary">
+        {{ "signup.create.cretaccount" | translate }}
+      </div>
+      <div class="mat-subheading-2" color="gray">
+        {{ "signup.create.filldata" | translate }}
+      </div>
+    </div>
+    <div class="w-100">
+      <mat-vertical-stepper linear #stepper>
+        <mat-step [stepControl]="comanyInfoForm" [formGroup]="comanyInfoForm">
+          <ng-template ariaLabel="asdasd" matStepLabel>
+            {{ "signup.create.info" | translate }}
+          </ng-template>
+          <p class="mt-4">
+            <app-upload-file [error]="(comanyInfoForm.get('logo')?.touched &&
+            comanyInfoForm.get('logo')?.invalid) ? 'image.ImageHint' : null" formControlName="logo" label="signup.create.logo" hint="image.ImageHint" [isRequired]="true" [isMultiple]="false"></app-upload-file>
+          </p>
+          <p class="mt-5">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "signup.create.arname" | translate }}</mat-label>
+              <input matInput formControlName="name_Ar" required />
+              <mat-error>{{ "signup.create.nmreq" | translate }}</mat-error>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "signup.create.enname" | translate }}</mat-label>
+              <input matInput formControlName="name_En" required />
+              <mat-error>{{ "signup.create.enreq" | translate }}</mat-error>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "signup.create.wbsite" | translate }}</mat-label>
+              <input matInput formControlName="website" />
+              <mat-error>{{ "signup.create.weberr" | translate }}</mat-error>
+            </mat-form-field>
+          </p>
+          <p>
+            <button matStepperNext class="w-100" mat-raised-button color="accent" (click)="comanyInfoForm.get('logo')?.markAsTouched()">
+              <span color="white">{{ "signup.create.nxt" | translate }}</span>
+            </button>
+          </p>
+        </mat-step>
+        <mat-step [stepControl]="comanyLocationForm" [formGroup]="comanyLocationForm">
+          <ng-template matStepLabel>
+            {{ "signup.create.cmpnyloc" | translate }}</ng-template>
+          <div *ngIf="apiLoaded | async">
+            <google-map #googleMap height="450px" width="370px" [options]="options" class="m-4" [center]="center">
+              <map-marker *ngIf="comanyLocationForm.value.location" [position]="markerLocation" [options]="markerOptions"></map-marker>
+            </google-map>
+            <mat-hint>{{ "signup.create.maphint" | translate }}</mat-hint>
+          </div>
+          <p class="mt-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "signup.create.adres" | translate }}</mat-label>
+              <input matInput formControlName="address" required />
+              <mat-hint>{{ "signup.create.adhint" | translate }}</mat-hint>
+            </mat-form-field>
+          </p>
+          <p>
+            <button matStepperNext class="w-100" mat-raised-button color="accent">
+              <span color="white">{{ "signup.create.nxt" | translate }}</span>
+            </button>
+          </p>
+        </mat-step>
+        <mat-step [stepControl]="contactInfoForm" [formGroup]="contactInfoForm">
+          <ng-template matStepLabel>{{"signup.create.cntct" | translate}}</ng-template>
+          <p class="mt-3">
+            <app-phone-form label="signup.create.nmbr" defaultCode="EG" hint="" error="signup.create.nmbrvalid" formControlName="phone"></app-phone-form>
+          </p>
+          <p class="mt-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "signup.create.chargeName" | translate }}</mat-label>
+              <input matInput formControlName="chargeName" required />
+              <mat-hint>{{ "signup.create.chargeNameHint" | translate }}</mat-hint>
+            </mat-form-field>
+          </p>
+          <p>
+            <button matStepperNext class="w-100" mat-raised-button color="accent">
+              <span color="white">{{ "signup.create.nxt" | translate }}</span>
+            </button>
+          </p>
+        </mat-step>
+        <mat-step [stepControl]="loginInfoFrom" [formGroup]="loginInfoFrom">
+          <ng-template matStepLabel>{{"signup.create.loginfo" | translate}}</ng-template>
+          <p class="mt-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "signup.create.mail" | translate }}</mat-label>
+              <input type="email" formControlName="email" matInput required />
+              <mat-error> {{'signup.create.mailvalid' | translate}}</mat-error>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ "signup.create.pswrd" | translate }}</mat-label>
+              <input [type]="visibility1 ? 'text' : 'password'" matInput formControlName="password" required />
+              <mat-icon (click)="visibility1 = !visibility1" *ngIf="!visibility1" class="visibility-icon" matSuffix>visibility</mat-icon>
+              <mat-icon (click)="visibility1 = !visibility1" *ngIf="visibility1" class="visibility-icon" matSuffix>visibility_off</mat-icon>
+              <mat-error>{{'signup.create.pswrdvalid' | translate}}</mat-error>
+            </mat-form-field>
+          </p>
+          <p>
+            <mat-form-field appearance="outline" class="w-100 mt-3">
+              <mat-label>{{ "signup.create.pswrdcnfrm" | translate }}</mat-label>
+              <input [type]="visibility2 ? 'text' : 'password'" matInput formControlName="confirmPassword" required minlength="8" />
+              <mat-icon (click)="visibility2 = !visibility2" *ngIf="!visibility2" class="visibility-icon" matSuffix>visibility</mat-icon>
+              <mat-icon (click)="visibility2 = !visibility2" *ngIf="visibility2" class="visibility-icon" matSuffix>visibility_off</mat-icon>
+              <mat-error>{{'signup.create.cnfrmhint' | translate}}</mat-error>
+            </mat-form-field>
+          </p>
+          <p class="mt-3">
+            <button (click)="submit()" mat-raised-button color="accent" [class.spinner]="loading" class="w-100"
+            [disabled]="loading || comanyInfoForm.invalid|| comanyLocationForm.invalid || contactInfoForm.invalid ||loginInfoFrom.invalid">
+              <span color="white">{{ "signup.create.sbmt" | translate }}</span>
+            </button>
+          </p>
+        </mat-step>
+      </mat-vertical-stepper>
+    </div>
+    <div color="gray">
+      {{ "signup.create.haveone" | translate }}
+      <a [routerLink]="['/auth/login']" mat-button color="primary">{{
+        "signup.create.log" | translate
+        }}</a>
+    </div>
+  </div>
+</app-form-layout>

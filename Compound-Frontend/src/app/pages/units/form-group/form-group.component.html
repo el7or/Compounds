@@ -1,0 +1,38 @@
+<app-form-layout [image]="'/assets/images/Group 1141.svg'">
+  <form [formGroup]="form" class="custom-center">
+    <div class="ar-style mb-5">
+      <div class="mat-display-1 mb-3" color="primary">
+        <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+          <mat-icon style="color: black">close</mat-icon>
+        </button>
+        {{caption|translate}}
+      </div>
+      <div class="mat-subheading-2" style="width: 25rem" color="gray">
+         {{'unit.formGroup.fill' | translate}} 
+      </div>
+    </div>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>{{'unit.formGroup.arName' | translate}}</mat-label>
+        <input matInput formControlName="nameAr" required />
+        <mat-error>{{ "unit.formGroup.nameReq" | translate }}</mat-error>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>{{'unit.formGroup.enName' | translate}}</mat-label>
+        <input matInput formControlName="nameEn" required />
+        <mat-error>{{ "unit.formGroup.nameReq" | translate }}</mat-error>
+      </mat-form-field>
+    </p>
+    <p>
+      <button (click)="submit()" [class.spinner]="loading"
+      [disabled]="loading" mat-raised-button
+      color="accent"
+      [disabled]="!form.valid"
+      >
+        <span color="white">{{ "unit.formGroup.save" | translate }}</span>
+      </button>
+    </p>
+  </form>
+</app-form-layout>

@@ -1,0 +1,117 @@
+<div class="container-fluid Header">
+  <div class="ar-style">
+    <div class="mat-display-1 mb-3 mt-5" color="primary">
+      <button class="form-close" mat-icon-button (click)="rightDrawer.close()">
+        <mat-icon style="color: black">close</mat-icon>
+      </button>
+      {{ roleId ? ('managementRoles.form.edit' | translate) : ('managementRoles.form.add' | translate)}}
+    </div>
+    <mat-divider class="mb-3"></mat-divider>
+  </div>
+  <div class="w-100">
+    <mat-vertical-stepper linear #stepper>
+      <mat-step [stepControl]="companyRoleForm" [formGroup]="companyRoleForm">
+        <ng-template matStepLabel (click)="changeInfo()">
+          <div class="stepper-header-overlay"></div>
+          {{ "managementRoles.form.roleData" | translate }}
+        </ng-template>
+        <p class="">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>{{ "managementRoles.form.roleEnglishName" | translate }}</mat-label>
+            <input class="input" matInput formControlName="roleEnglishName" />
+            <mat-error>{{ "managementRoles.form.roleEnglishName" | translate }}</mat-error>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>{{ "managementRoles.form.roleArabicName" | translate }}</mat-label>
+            <input matInput formControlName="roleArabicName" />
+            <mat-error>{{ "managementRoles.form.roleArabicName" | translate }}</mat-error>
+          </mat-form-field>
+        </p>
+        <p>
+          <button class="w-100" mat-raised-button color="accent" [class.spinner]="loading"
+            [disabled]="loading || companyRoleForm.invalid" (click)="onSaveRole(stepper)">
+            <span color="white"> {{ "managementRoles.form.nxt" | translate }}</span>
+          </button>
+        </p>
+      </mat-step>
+      <mat-step>
+        <ng-template ariaLabel="asdasd" matStepLabel>
+          <div class="stepper-header-overlay"></div>
+          {{ "managementRoles.form.pageActions" | translate }}
+        </ng-template>
+        <ng-container *ngIf="allPagesActions">
+          <div *ngFor="let page of allPagesActions" class="mt-3">
+            <p class="mb-1">
+              <b>{{ currentLang == 'en' ? page.pageEnglishName : page.pageArabicName}}:</b>&nbsp;
+            </p>
+            <span *ngFor="let action of page.systemPageActions">
+              <mat-checkbox [(ngModel)]="action.isSelected" class="mx-3">
+                {{ currentLang == 'en' ? action.actionEnglishName : action.actionArabicName}}
+              </mat-checkbox>
+            </span>
+          </div>
+          <p>
+            <button class="w-100" mat-raised-button color="accent" [class.spinner]="loading"
+              [disabled]="loading || !checkSelectedActions()" (click)="onSaveActions(stepper)">
+              <span color="white"> {{ "managementRoles.form.nxt" | translate }}</span>
+            </button>
+          </p>
+        </ng-container>
+      </mat-step>
+      <mat-step>
+        <ng-template ariaLabel="asdasd" matStepLabel>
+          <div class="stepper-header-overlay"></div>
+          {{ "managementRoles.form.users" | translate }}
+        </ng-template>
+        <ng-container *ngIf="allCompanyUsers">
+          <form>
+            <mat-form-field class="full-width" appearance="fill">
+              <mat-label>{{'managementRoles.form.search' | translate}}</mat-label>
+              <input type="text" matInput [formControl]="usersControl" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+                (optionSelected)="onSelectedUser($event.option.value)">
+                <mat-option *ngFor="let user of filteredOptions | async" [value]="user">
+                  {{ currentLang == 'en' ? user.nameEn : user.nameAr}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+          <table class="table" *ngIf="companyUsers?.length">
+            <thead>
+              <tr class="header">
+                <th>{{ "managementRoles.form.userName" | translate }}</th>
+                <!-- <th>{{ "managementRoles.form.email" | translate }}</th>
+                <th>{{ "managementRoles.form.phone" | translate }}</th>
+                <th>{{ "managementRoles.form.currentRole" | translate }}</th> -->
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of companyUsers">
+                <td>{{ currentLang == 'en' ? user.nameEn : user.nameAr}}</td>
+                <!-- <td>{{user.email}}</td>
+                <td>{{user.phone}}</td>
+                <td>{{ currentLang == 'en' ? user.currentRole?.roleEnglishName :
+                  user.currentRole?.roleArabicName
+                  }}</td> -->
+                <td>
+                  <button mat-icon-button color="primary" (click)="onDeleteUser(user)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <button class="w-100" *ngIf="currentUserService.checkRolePageAction(SystemPageActions.RolesManagementEdit)" mat-raised-button color="accent" [class.spinner]="loading"
+              [disabled]="loading || !companyUsers?.length" (click)="onSaveUsers()">
+              <span color="white"> {{ "managementRoles.form.save" | translate }}</span>
+            </button>
+          </p>
+        </ng-container>
+      </mat-step>
+    </mat-vertical-stepper>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+::ng-deep .mat-step-header[aria-selected="true"] {
+  background-color: rgb(128, 87, 167, 0.1);
+  height: 0px;
+  border-radius: 5px;
+}
+::ng-deep .mat-step-header[aria-selected="false"] {
+  border-radius: 5px;
+  height: 0px;
+}
+.visibility-icon {
+  cursor: pointer;
+}
+ .ownerWidth{
+   width:450px
+ }

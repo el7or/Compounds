@@ -1,0 +1,74 @@
+.main-container {
+  position: relative;
+  .top-image {
+    position: relative;
+    z-index: 1;
+    width: 174px;
+    height: 180px;
+  }
+  .layout-content {
+    position: absolute;
+    width: 100vw;
+    top: 0px;
+
+    .rtl & {
+      right: 0px;
+    }
+    .ltr & {
+      left: 0px;
+    }
+    mat-sidenav-content {
+      height: calc(100vh - 129px);
+      // @media (max-width: 600px) {
+      //   height: calc(100vh * 1.465);
+      // }
+      overflow-x: hidden !important;
+    }
+    .sidenav {
+      background-color: #8057a7;
+    }
+    .sidenav:not(.mat-drawer-opened) {
+      .mat-list-base {
+        .mat-list-item {
+          color: rgb(255, 255, 255);
+        }
+      }
+    }
+    // @media (max-width: 600px) {
+    //   width: auto;
+    // }
+  }
+  .rightPanel {
+    width: 100%;
+  }
+  .notification-drawer {
+    background-color: #ebebeb;
+    @media only screen and (min-device-width: 360px) {
+      width: 80vw;
+    }
+    @media only screen and (min-device-width: 992px) {
+      width: 20vw;
+    }
+  }
+
+  mat-sidenav::-webkit-scrollbar {
+    width: 0.5em;
+  }
+
+  mat-sidenav::-webkit-scrollbar-track {
+    -moz-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+
+  mat-sidenav::-webkit-scrollbar-thumb {
+    background-color: #ffc529;
+    outline: 1px solid slategrey;
+  }
+
+  mat-sidenav {
+    scrollbar-width: thin;
+    scrollbar-color: #ffc529 #633c8c;
+    overflow-x: hidden;
+  }
+}
